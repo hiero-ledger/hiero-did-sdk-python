@@ -1,0 +1,4 @@
+from .hcs_did_revoke_verification_method_event import HcsDidRevokeVerificationMethodEvent
+from .hcs_did_update_verification_method_event import HcsDidUpdateVerificationMethodEvent
+
+__all__ = ["HcsDidRevokeVerificationMethodEvent", "HcsDidUpdateVerificationMethodEvent"]

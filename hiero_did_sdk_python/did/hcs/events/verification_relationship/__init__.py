@@ -1,0 +1,4 @@
+from .hcs_did_revoke_verification_relationship_event import HcsDidRevokeVerificationRelationshipEvent
+from .hcs_did_update_verification_relationship_event import HcsDidUpdateVerificationRelationshipEvent
+
+__all__ = ["HcsDidRevokeVerificationRelationshipEvent", "HcsDidUpdateVerificationRelationshipEvent"]

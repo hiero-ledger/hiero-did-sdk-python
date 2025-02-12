@@ -1,0 +1,61 @@
+site_name: hiero-did-sdk-python
+repo_url: https://github.com/hiero-ledger/hiero-did-sdk-python
+site_url: https://hiero-ledger.github.io/hiero-did-sdk-python
+site_description: The repository contains the Python SDK for managing DID Documents and Anoncreds Verifiable Credentials registry using Hedera Consensus Service.
+edit_uri: edit/main/docs/
+docs_dir: docs/dev
+repo_name: hiero-ledger/hiero-did-sdk-python
+copyright: Maintained by <a href="https://hedera.com/">Hedera Hashgraph LLC</a>.
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Configuration: configuration.md
+  - Modules:
+      - Common: modules/common.md
+      - Hedera DID: modules/did.md
+      - AnonCreds: modules/anoncreds.md
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          setup_commands:
+            - import sys
+            - sys.path.append('../')
+          options:
+            heading_level: 3
+            show_root_heading: false
+            show_root_toc_entry: false
+theme:
+  name: material
+  feature:
+    tabs: true
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: white
+      accent: deep orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: deep orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/hiero-ledger/hiero-did-sdk-python
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/hiero-did-sdk-python
+
+markdown_extensions:
+  - toc:
+      permalink: true
