@@ -6,10 +6,15 @@
 [![Commit activity](https://img.shields.io/github/commit-activity/m/hiero-ledger/hiero-did-sdk-python)](https://img.shields.io/github/commit-activity/m/hiero-ledger/hiero-did-sdk-python)
 [![License](https://img.shields.io/github/license/hiero-ledger/hiero-did-sdk-python)](https://img.shields.io/github/license/hiero-ledger/hiero-did-sdk-python)
 
-The repository contains the Python SDK for managing DID Documents and AnonCreds Verifiable Credentials registry using
-Hedera Consensus Service.
+This repository contains the Python SDK that enables developers to manage Decentralized Identifiers (DIDs) and AnonCreds Verifiable Credentials on the Hedera network using the Hedera Consensus Service.
 
 This library is using [Hiero Python SDK](https://github.com/hiero-ledger/hiero-sdk-python).
+
+# Table of contents
+1. [Documentation](#Documentation)
+2. [Getting started](#GettingStarted)
+3. [Configuration](#Configuration)
+4. [Contributing](#Contributing)
 
 ## Documentation
 
