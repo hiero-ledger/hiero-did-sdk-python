@@ -103,7 +103,7 @@ Now, validate that all unit tests are passing:
 make test
 ```
 
-9. Before raising a pull request you should also run tox.
+9. Before raising a pull request it's recommended to also run tox.
    This will run the tests across different versions of Python:
 
 ```bash

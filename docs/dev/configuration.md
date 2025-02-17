@@ -58,7 +58,7 @@ By default, [in-memory cache implementation](modules/common.md#hiero_did_sdk_pyt
 You can create custom cache implementation by inheriting [Cache base class](modules/common.md#hiero_did_sdk_python.utils.cache.Cache).
 Custom cache instance needs to be provided in resolver constructor arguments.
 
-Resolver classes that accept custom cache implementation:
+Classes that accept custom cache implementation:
 
 - [HederaDidResolver](modules/did.md#hiero_did_sdk_python.did.hedera_did_resolver.HederaDidResolver)
 - [HederaAnonCredsRegistry](modules/anoncreds.md#hiero_did_sdk_python.anoncreds.hedera_anoncreds_registry.HederaAnonCredsRegistry)

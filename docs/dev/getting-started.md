@@ -3,12 +3,18 @@
 ## Prerequisites
 
 - Python 3.12+
+- [Poetry](https://python-poetry.org/) (at least 1.8.4)
+- NodeJS and npm (used by pre-commit hooks)
+- Tools for Makefile support (Windows only)
+  - Can be installed with [chocolatey](https://chocolatey.org/): `choco install make`
 
-## Install from PyPi
+## Install package (from Git source)
 
 ```bash
-pip install hiero-did-sdk-python
+pip install git+https://github.com/hiero-ledger/hiero-did-sdk-python@main
 ```
+
+Please note that PyPi package will soon be published and replace Git source dependency as recommended installation method.
 
 ## Example usage
 
