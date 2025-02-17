@@ -11,10 +11,11 @@ This repository contains the Python SDK that enables developers to manage Decent
 This library is using [Hiero Python SDK](https://github.com/hiero-ledger/hiero-sdk-python).
 
 # Table of contents
-1. [Documentation](#Documentation)
-2. [Getting started](#GettingStarted)
-3. [Configuration](#Configuration)
-4. [Contributing](#Contributing)
+
+1. [Documentation](#documentation)
+2. [Getting started](#getting-started)
+3. [Configuration](#configuration)
+4. [Contributing](CONTRIBUTING.md)
 
 ## Documentation
 
