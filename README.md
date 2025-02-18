@@ -12,10 +12,29 @@ This library is using [Hiero Python SDK](https://github.com/hiero-ledger/hiero-s
 
 # Table of contents
 
-1. [Documentation](#documentation)
-2. [Getting started](#getting-started)
-3. [Configuration](#configuration)
-4. [Contributing](CONTRIBUTING.md)
+1. [Overview](#overview)
+2. [Documentation](#documentation)
+3. [Getting started](#getting-started)
+4. [Configuration](#configuration)
+5. [Contributing](CONTRIBUTING.md)
+
+## Overview
+
+Decentralized identity ecosystems are built upon decentralized identifiers (DIDs) and verifiable credentials (VCs) standards, providing necessary functionality to publish and resolve DID documents and issue/verify credentials (claims).
+
+Data model of such ecosystems rely on [Verifiable Data Registries (VDRs)](https://w3c.github.io/vc-data-model/#dfn-verifiable-data-registries), commonly represented by decentralized ledgers.
+
+[Hiero](https://hiero.org/), as an open-source Decentralized Ledger Technology (DLT), is a great VDR option providing high-performance and low costs of operations.
+Hedera, while being built on Hiero, is a large and trusted network that will be a great choice for solutions searching for high-reliability.
+
+In particular, Hedera and other Hiero-based networks can be used as VDR for [Hedera DID Method](https://github.com/hashgraph/did-method/blob/master/hedera-did-method-specification.md) and [AnonCreds Verifiable Credentials](https://github.com/hyperledger/anoncreds-spec) by leveraging Hedera Consensus Service (HCS).
+
+This SDK is designed to simplify:
+
+- Creation and management of Hedera DID documents
+- Creation and management of AnonCreds resources
+- Adoption of Hiero-based VDRs for AnonCreds use cases
+- Empowering new and existing Python-based agent implementations with high-performance and low operational costs provided by Hiero
 
 ## Documentation
 
