@@ -266,3 +266,21 @@ Logger configuration supports following properties that can be set with environm
   - For log format pattern reference, please see Python docs:
     - [Formatter objects](https://docs.python.org/3/library/logging.html#formatter-objects)
     - [Log record attributes](https://docs.python.org/3/library/logging.html#logrecord-attributes)
+
+## Contributing to this Project
+
+Whether you’re fixing bugs, enhancing features, or improving documentation, your contributions are important — let’s build something great together!
+
+For instructions on how to contribute to this repo, please
+review the [Contributing Guide for the Hiero DID SDK](CONTRIBUTING.md).
+
+More instructions for contribution can be found in the
+[Global Contributing Guide](https://github.com/hiero-ledger/.github/blob/main/CONTRIBUTING.md).
+
+## Code of Conduct
+
+Hiero uses the Linux Foundation Decentralised Trust [Code of Conduct](https://www.lfdecentralizedtrust.org/code-of-conduct).
+
+## License
+
+[Apache License 2.0](LICENSE)
