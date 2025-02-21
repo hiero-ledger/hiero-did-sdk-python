@@ -1,5 +1,6 @@
 import logging
 from collections.abc import Callable
+from typing import cast
 
 from hiero_sdk_python import Client, Timestamp, TopicId, TopicMessageQuery
 from hiero_sdk_python.consensus.topic_message import TopicMessage
@@ -26,10 +27,8 @@ class HcsTopicListener:
 
         self._query = (
             TopicMessageQuery(topic_id=TopicId.from_string(topic_id), start_time=Timestamp(0, 0).to_date())
-            # Not implemented in native SDK
-            # See GH issue: https://github.com/hiero-ledger/hiero-sdk-python/issues/43
-            # .setMaxBackoff(JDuration.ofMillis(2000))
-            # .setMaxAttempts(5)
+            .set_max_backoff(2.0)
+            .set_max_attempts(5)
         )
 
     def set_start_time(self, start_time: Timestamp):
@@ -45,7 +44,7 @@ class HcsTopicListener:
         return self
 
     def set_completion_handler(self, completion_handler: Callable[[], None]):
-        # Not implemented in native SDK
+        # Completion handler + subscription handle cancellation does not work properly in native SDK
         # See GH issue: https://github.com/hiero-ledger/hiero-sdk-python/issues/43
         # self._query.setCompletionHandler(completion_handler)
         return self
@@ -67,13 +66,11 @@ class HcsTopicListener:
         def handle_message(response):
             self._handle_response(response, receiver)
 
-        # Subscription handle is not actually implemented in native SDK
-        # See GH issue: https://github.com/hiero-ledger/hiero-sdk-python/issues/43
         self._subscription_handle = self._query.subscribe(client, handle_message, error_handler)
 
     def unsubscribe(self):
         if self._subscription_handle:
-            self._subscription_handle.unsubscribe()
+            self._subscription_handle.cancel()
 
     def _handle_response(
         self, response: TopicMessage, receiver: Callable[[HcsMessage | HcsMessageWithResponseMetadata], None]
@@ -97,8 +94,8 @@ class HcsTopicListener:
             receiver(
                 HcsMessageWithResponseMetadata(
                     message=message,
-                    sequence_number=response.sequence_number,
-                    consensus_timestamp=Timestamp.from_protobuf(response.consensus_timestamp),
+                    sequence_number=cast(int, response.sequence_number),
+                    consensus_timestamp=Timestamp.from_date(response.consensus_timestamp),
                 )
             )
         else:
@@ -106,11 +103,13 @@ class HcsTopicListener:
 
     def _extract_message(self, response: TopicMessage) -> HcsMessage | None:
         try:
-            return self._message_class.from_json(response.message.decode())
+            message_content = cast(bytes, response.contents).decode()
+            return self._message_class.from_json(message_content)
         except Exception as error:
             LOGGER.warning(f"Failed to extract HCS message from response: {error!s}")
 
     def _report_invalid_message(self, response: TopicMessage, reason: str):
-        LOGGER.warning(f"Got invalid message: {response.message.decode()}, reason: {reason}")
+        message_content = cast(bytes, response.contents).decode()
+        LOGGER.warning(f"Got invalid message: {message_content}, reason: {reason}")
         if self._invalid_message_handler:
             self._invalid_message_handler(response, reason)
