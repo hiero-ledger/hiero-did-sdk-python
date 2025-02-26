@@ -92,7 +92,7 @@ make build
 - Tools for Makefile support (Windows only)
   - Can be installed with [chocolatey](https://chocolatey.org/): `choco install make`
 
-### Install package (from Git source)
+### Install package
 
 ```bash
 pip install hiero-did-sdk-python
