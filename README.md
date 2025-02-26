@@ -40,10 +40,7 @@ This SDK is designed to simplify:
 
 ### Dev and API
 
-We're planning to publish dev guides along with [mkdocs](https://www.mkdocs.org/)-generated API documentation to GH pages in near future.
-You can find [documentation sources in repo](docs/dev).
-
-Meanwhile, dev guides have been added to this README for convenience.
+You can find dev documentation on [GH pages](https://hiero-ledger.github.io/hiero-did-sdk-python/).
 
 If you're planning to contribute to the project, please also check [contribution guidelines](CONTRIBUTING.md).
 
@@ -98,10 +95,8 @@ make build
 ### Install package (from Git source)
 
 ```bash
-pip install git+https://github.com/hiero-ledger/hiero-did-sdk-python@main
+pip install hiero-did-sdk-python
 ```
-
-Please note that PyPi package will soon be published and replace Git source dependency as recommended installation method.
 
 ### Example usage
 
