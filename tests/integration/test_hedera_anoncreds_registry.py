@@ -32,9 +32,9 @@ from hiero_did_sdk_python.anoncreds.types import (
 from hiero_did_sdk_python.anoncreds.utils import AnonCredsObjectType, parse_anoncreds_identifier
 from hiero_did_sdk_python.hcs import HcsMessageResolver
 
-from .conftest import OPERATOR_KEY_DER
+from .conftest import NETWORK, OPERATOR_KEY_DER
 
-ISSUER_ID = "did:hedera:testnet:zvAQyPeUecGck2EsxcsihxhAB6jZurFrBbj2gC7CNkS5o_0.0.5063027"
+ISSUER_ID = f"did:hedera:{NETWORK}:zvAQyPeUecGck2EsxcsihxhAB6jZurFrBbj2gC7CNkS5o_0.0.5063027"
 
 MOCK_SCHEMA_PARAMS = {
     "name": "mock-schema",
@@ -69,7 +69,7 @@ ACCUM_1 = "mock-accum-1"
 ACCUM_2 = "mock-accum-2"
 
 
-@pytest.mark.flaky(retries=3, delay=1)
+# @pytest.mark.flaky(retries=3, delay=1)
 @pytest.mark.asyncio(loop_scope="session")
 class TestHederaAnonCredsRegistry:
     async def test_creates_anoncreds_schema(self, client: Client, Something):
@@ -92,7 +92,7 @@ class TestHederaAnonCredsRegistry:
         assert parsed_identifier.object_type == AnonCredsObjectType.SCHEMA
 
         # Wait until changes are propagated to Hedera Mirror node
-        await asyncio.sleep(5)
+        await asyncio.sleep(30)
 
         resolution_result = await registry.get_schema(schema_id)
 
@@ -124,7 +124,7 @@ class TestHederaAnonCredsRegistry:
         assert parsed_identifier.object_type == AnonCredsObjectType.PUBLIC_CRED_DEF
 
         # Wait until changes are propagated to Hedera Mirror node
-        await asyncio.sleep(5)
+        await asyncio.sleep(30)
 
         resolution_result = await registry.get_cred_def(cred_def_id)
 
@@ -159,7 +159,7 @@ class TestHederaAnonCredsRegistry:
         assert parsed_identifier.object_type == AnonCredsObjectType.REV_REG
 
         # Wait until changes are propagated to Hedera Mirror node
-        await asyncio.sleep(5)
+        await asyncio.sleep(30)
 
         resolution_result = await registry.get_rev_reg_def(rev_reg_def_id)
 
@@ -182,7 +182,7 @@ class TestHederaAnonCredsRegistry:
         assert rev_reg_def_id
 
         # Wait until changes are propagated to Hedera Mirror node
-        await asyncio.sleep(5)
+        await asyncio.sleep(30)
 
         rev_list = AnonCredsRevList(
             issuer_id=ISSUER_ID,
@@ -205,7 +205,7 @@ class TestHederaAnonCredsRegistry:
         assert rev_reg_entries_topic_id
 
         # Wait until changes are propagated to Hedera Mirror node
-        await asyncio.sleep(5)
+        await asyncio.sleep(30)
 
         entries_messages = await HcsMessageResolver(rev_reg_entries_topic_id, HcsRevRegEntryMessage).execute(client)
 
@@ -240,7 +240,7 @@ class TestHederaAnonCredsRegistry:
         )
 
         # Wait until changes are propagated to Hedera Mirror node
-        await asyncio.sleep(5)
+        await asyncio.sleep(30)
 
         entries_messages = await HcsMessageResolver(rev_reg_entries_topic_id, HcsRevRegEntryMessage).execute(client)
 

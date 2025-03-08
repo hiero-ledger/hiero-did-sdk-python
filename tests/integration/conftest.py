@@ -14,11 +14,11 @@ if not OPERATOR_ID or not OPERATOR_KEY_DER:
         "You can obtain them by creating developer account on https://portal.hedera.com/"
     )
 
+NETWORK: str = os.environ.get("NETWORK") or "testnet"
+
 OPERATOR_KEY = PrivateKey.from_string(OPERATOR_KEY_DER)
 
 OPERATOR_KEY_TYPE = get_key_type(OPERATOR_KEY)
-
-NETWORK = os.environ.get("NETWORK") or "testnet"
 
 
 @pytest.fixture(scope="class")
