@@ -18,10 +18,12 @@ OPERATOR_KEY = PrivateKey.from_string(OPERATOR_KEY_DER)
 
 OPERATOR_KEY_TYPE = get_key_type(OPERATOR_KEY)
 
+NETWORK = os.environ.get("NETWORK") or "testnet"
+
 
 @pytest.fixture(scope="class")
 def client():
-    client = Client(network=Network("testnet"))
+    client = Client(network=Network(NETWORK))
     client.set_operator(AccountId.from_string(OPERATOR_ID), private_key=OPERATOR_KEY)
 
     yield client

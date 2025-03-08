@@ -54,6 +54,7 @@ jobs:
         env:
           OPERATOR_ID: ${{ steps.solo.outputs.accountId }}
           OPERATOR_KEY: ${{ steps.solo.outputs.privateKey }}
+          NETWORK: solo
 
       - name: Check typing
         run: poetry run pyright
