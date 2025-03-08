@@ -117,10 +117,10 @@ class HederaDidResolver:
 
                 did_document = await registered_did.resolve()
 
-                self._cache.set(
-                    topic_id,
-                    TimestampedRecord(did_document, did_document.updated or did_document.created or time.time()),
-                )
+                # self._cache.set(
+                #     topic_id,
+                #     TimestampedRecord(did_document, did_document.updated or did_document.created or time.time()),
+                # )
 
             document_meta = {
                 "versionId": did_document.version_id,

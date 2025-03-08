@@ -10,7 +10,7 @@ from .hcs_message import HcsMessage, HcsMessageWithResponseMetadata
 from .hcs_message_envelope import HcsMessageEnvelope
 from .hcs_topic_listener import HcsTopicListener
 
-DEFAULT_TIMEOUT_SECONDS = float(5)
+DEFAULT_TIMEOUT_SECONDS = float(10)
 
 TOPIC_UNSUBSCRIBED_ERROR = "CANCELLED: unsubscribe"
 
