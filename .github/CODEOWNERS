@@ -6,3 +6,7 @@
 #########################
 ##### Example apps ######
 #########################
+
+# Protection Rules for Github Configuration Files and Actions Workflows
+/.github/                                           @hiero-ledger/github-maintainers
+/.github/workflows/                                 @hiero-ledger/github-maintainers
