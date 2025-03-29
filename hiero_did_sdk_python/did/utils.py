@@ -9,6 +9,7 @@ from .did_syntax import (
     HEDERA_DID_METHOD,
     HEDERA_NETWORK_MAINNET,
     HEDERA_NETWORK_PREVIEWNET,
+    HEDERA_NETWORK_SOLO,
     HEDERA_NETWORK_TESTNET,
 )
 
@@ -94,6 +95,7 @@ def parse_identifier(identifier: str) -> ParsedIdentifier:
             network_name != HEDERA_NETWORK_MAINNET
             and network_name != HEDERA_NETWORK_TESTNET
             and network_name != HEDERA_NETWORK_PREVIEWNET
+            and network_name != HEDERA_NETWORK_SOLO
         ):
             raise DidException("DID string is invalid. Invalid Hedera network.", DidErrorCode.INVALID_NETWORK)
 
