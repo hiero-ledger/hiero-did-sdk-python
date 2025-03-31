@@ -1,6 +1,5 @@
 import logging
 from collections.abc import Callable
-from datetime import timedelta
 from typing import cast
 
 from hiero_sdk_python import Client, Timestamp, TopicId, TopicMessageQuery
@@ -33,11 +32,11 @@ class HcsTopicListener:
         )
 
     def set_start_time(self, start_time: Timestamp):
-        self._query.set_start_time(start_time.to_date() - timedelta(minutes=120))
+        self._query.set_start_time(start_time.to_date())
         return self
 
     def set_end_time(self, end_time: Timestamp):
-        self._query.set_end_time(end_time.to_date() + timedelta(minutes=120))
+        self._query.set_end_time(end_time.to_date())
         return self
 
     def set_limit(self, limit: int):

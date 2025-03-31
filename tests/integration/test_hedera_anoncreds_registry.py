@@ -69,7 +69,7 @@ ACCUM_1 = "mock-accum-1"
 ACCUM_2 = "mock-accum-2"
 
 
-@pytest.mark.flaky(retries=3, delay=1)
+# @pytest.mark.flaky(retries=3, delay=1)
 @pytest.mark.asyncio(loop_scope="session")
 class TestHederaAnonCredsRegistry:
     async def test_creates_anoncreds_schema(self, client: Client, Something):
