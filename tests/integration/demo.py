@@ -93,7 +93,7 @@ class TestDemo:
         )
 
         # Wait until changes are propagated to Hedera Mirror node
-        await asyncio.sleep(5)
+        await asyncio.sleep(10)
 
         # Create Hedera DID resolver instance
         did_resolver = HederaDidResolver(client)
@@ -135,7 +135,7 @@ class TestDemo:
         )
 
         # Wait until changes are propagated to Hedera Mirror node
-        await asyncio.sleep(5)
+        await asyncio.sleep(10)
 
         print("Resolving schema object...")
 
@@ -174,7 +174,7 @@ class TestDemo:
         )
 
         # Wait until changes are propagated to Hedera Mirror node
-        await asyncio.sleep(5)
+        await asyncio.sleep(10)
 
         print("Resolving credential definition object...")
 
@@ -224,7 +224,7 @@ class TestDemo:
         )
 
         # Wait until changes are propagated to Hedera Mirror node
-        await asyncio.sleep(5)
+        await asyncio.sleep(10)
 
         print("Resolving revocation registry definition object...")
 
@@ -257,7 +257,7 @@ class TestDemo:
         rev_list_timestamp = int(time.time())
 
         # Wait until changes are propagated to Hedera Mirror node
-        await asyncio.sleep(5)
+        await asyncio.sleep(10)
 
         print(
             f"Revocation list has been registered, initial revocation entry can be found in HCS topic: https://hashscan.io/testnet/topic/{rev_reg_entries_topic_id}"
@@ -281,7 +281,7 @@ class TestDemo:
         assert rev_list_update_result.revocation_list_state.state == "finished"
 
         # Wait until changes are propagated to Hedera Mirror node
-        await asyncio.sleep(5)
+        await asyncio.sleep(10)
 
         print("Resolving revocation list states...")
 
