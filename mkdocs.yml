@@ -1,11 +1,10 @@
-site_name: hiero-did-sdk-python
+site_name: Hiero DID SDK Python
 repo_url: https://github.com/hiero-ledger/hiero-did-sdk-python
 site_url: https://hiero-ledger.github.io/hiero-did-sdk-python
 site_description: The repository contains the Python SDK for managing DID Documents and Anoncreds Verifiable Credentials registry using Hedera Consensus Service.
 edit_uri: edit/main/docs/
 docs_dir: docs/dev
 repo_name: hiero-ledger/hiero-did-sdk-python
-copyright: Maintained by <a href="https://hedera.com/">Hedera Hashgraph LLC</a>.
 
 nav:
   - Home: index.md
@@ -15,6 +14,8 @@ nav:
       - Common: modules/common.md
       - Hedera DID: modules/did.md
       - AnonCreds: modules/anoncreds.md
+extra_css:
+  - stylesheets/extra.css
 plugins:
   - search
   - mkdocstrings:
@@ -29,25 +30,31 @@ plugins:
             show_root_toc_entry: false
 theme:
   name: material
+  logo: assets/hiero-logo.svg
+  favicon: assets/hiero-icon.svg
   feature:
     tabs: true
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: white
-      accent: deep orange
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: black
-      accent: deep orange
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
   icon:
     repo: fontawesome/brands/github
+  features:
+    - content.code.copy
+    - navigation.expand
+    - navigation.footer
+    - navigation.instant
+    - navigation.top
+    - navigation.tracking
+    - toc.follow
 
 extra:
   social:
@@ -57,5 +64,32 @@ extra:
       link: https://pypi.org/project/hiero-did-sdk-python
 
 markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
   - toc:
       permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: squidfunk
+      repo: mkdocs-material
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde

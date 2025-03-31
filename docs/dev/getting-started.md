@@ -8,13 +8,11 @@
 - Tools for Makefile support (Windows only)
   - Can be installed with [chocolatey](https://chocolatey.org/): `choco install make`
 
-## Install package (from Git source)
+## Install package
 
 ```bash
-pip install git+https://github.com/hiero-ledger/hiero-did-sdk-python@main
+pip install hiero-did-sdk-python
 ```
-
-Please note that PyPi package will soon be published and replace Git source dependency as recommended installation method.
 
 ## Example usage
 

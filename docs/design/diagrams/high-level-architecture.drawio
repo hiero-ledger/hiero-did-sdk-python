@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.5 Chrome/126.0.6478.183 Electron/31.3.0 Safari/537.36" version="24.7.5">
   <diagram id="SVFWI7yHhve9LLFDnVji" name="Page-1">
-    <mxGraphModel dx="2600" dy="320" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="583" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="1791" dy="-254" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="583" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -175,7 +175,7 @@
         <mxCell id="bJ_856CTpxn92Df5gTnD-193" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;startArrow=classic;startFill=1;" parent="bJ_856CTpxn92Df5gTnD-6" source="bJ_856CTpxn92Df5gTnD-7" target="bJ_856CTpxn92Df5gTnD-183" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="bJ_856CTpxn92Df5gTnD-7" value="HCS File Service&lt;br&gt;(HCS-1 implementation)" style="html=1;" parent="bJ_856CTpxn92Df5gTnD-6" vertex="1">
+        <mxCell id="bJ_856CTpxn92Df5gTnD-7" value="HCS-1 Service&lt;br&gt;(HCS-1 implementation)" style="html=1;" parent="bJ_856CTpxn92Df5gTnD-6" vertex="1">
           <mxGeometry x="258" y="30" width="150" height="80" as="geometry" />
         </mxCell>
         <mxCell id="bJ_856CTpxn92Df5gTnD-174" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=classic;startFill=1;" parent="bJ_856CTpxn92Df5gTnD-6" source="bJ_856CTpxn92Df5gTnD-8" target="bJ_856CTpxn92Df5gTnD-7" edge="1">
@@ -253,7 +253,7 @@
             <mxPoint x="500" y="261.588235294118" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="UQAl74JsN-pTrgw2dUXJ-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="bJ_856CTpxn92Df5gTnD-110" source="bJ_856CTpxn92Df5gTnD-116" target="UQAl74JsN-pTrgw2dUXJ-1">
+        <mxCell id="UQAl74JsN-pTrgw2dUXJ-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="bJ_856CTpxn92Df5gTnD-110" source="bJ_856CTpxn92Df5gTnD-116" target="UQAl74JsN-pTrgw2dUXJ-1" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="280" y="282" />
@@ -262,7 +262,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="bJ_856CTpxn92Df5gTnD-116" value="HCS File Service&lt;br&gt;(HCS-1 implementation)" style="html=1;" parent="bJ_856CTpxn92Df5gTnD-110" vertex="1">
+        <mxCell id="bJ_856CTpxn92Df5gTnD-116" value="HCS-1 Service&lt;br&gt;(HCS-1 implementation)" style="html=1;" parent="bJ_856CTpxn92Df5gTnD-110" vertex="1">
           <mxGeometry x="90" y="222" width="150" height="80" as="geometry" />
         </mxCell>
         <mxCell id="bJ_856CTpxn92Df5gTnD-173" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="bJ_856CTpxn92Df5gTnD-110" source="bJ_856CTpxn92Df5gTnD-156" edge="1">
@@ -287,7 +287,7 @@
         <mxCell id="bJ_856CTpxn92Df5gTnD-163" value="Publich Topic&lt;br&gt;Messages" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="bJ_856CTpxn92Df5gTnD-110" vertex="1">
           <mxGeometry x="-5" y="387" width="90" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="UQAl74JsN-pTrgw2dUXJ-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="bJ_856CTpxn92Df5gTnD-110" target="UQAl74JsN-pTrgw2dUXJ-1">
+        <mxCell id="UQAl74JsN-pTrgw2dUXJ-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" parent="bJ_856CTpxn92Df5gTnD-110" target="UQAl74JsN-pTrgw2dUXJ-1" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="-40" y="580" as="sourcePoint" />
           </mxGeometry>
@@ -322,12 +322,12 @@
         <mxCell id="bJ_856CTpxn92Df5gTnD-178" value="HCS-related types and utils&lt;br&gt;(base HCS message class,&lt;br&gt;async execution helpers)" style="html=1;" parent="bJ_856CTpxn92Df5gTnD-110" vertex="1">
           <mxGeometry x="40" y="630" width="250" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="UQAl74JsN-pTrgw2dUXJ-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;" edge="1" parent="bJ_856CTpxn92Df5gTnD-110" source="UQAl74JsN-pTrgw2dUXJ-1">
+        <mxCell id="UQAl74JsN-pTrgw2dUXJ-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;" parent="bJ_856CTpxn92Df5gTnD-110" source="UQAl74JsN-pTrgw2dUXJ-1" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="-40" y="540" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="UQAl74JsN-pTrgw2dUXJ-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="bJ_856CTpxn92Df5gTnD-110" source="UQAl74JsN-pTrgw2dUXJ-1">
+        <mxCell id="UQAl74JsN-pTrgw2dUXJ-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="bJ_856CTpxn92Df5gTnD-110" source="UQAl74JsN-pTrgw2dUXJ-1" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="500" y="560" as="targetPoint" />
             <Array as="points">
@@ -335,10 +335,10 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="UQAl74JsN-pTrgw2dUXJ-1" value="HCS Topic Service" style="html=1;" vertex="1" parent="bJ_856CTpxn92Df5gTnD-110">
+        <mxCell id="UQAl74JsN-pTrgw2dUXJ-1" value="HCS Topic Service" style="html=1;" parent="bJ_856CTpxn92Df5gTnD-110" vertex="1">
           <mxGeometry x="90" y="520" width="150" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="UQAl74JsN-pTrgw2dUXJ-4" value="Topic&lt;br&gt;create/update&lt;br&gt;transactions" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="bJ_856CTpxn92Df5gTnD-110">
+        <mxCell id="UQAl74JsN-pTrgw2dUXJ-4" value="Topic&lt;br&gt;create/update&lt;br&gt;transactions" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="bJ_856CTpxn92Df5gTnD-110" vertex="1">
           <mxGeometry x="-9" y="482" width="100" height="60" as="geometry" />
         </mxCell>
         <mxCell id="bJ_856CTpxn92Df5gTnD-142" value="HCS file&lt;br&gt;topic creation" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="bJ_856CTpxn92Df5gTnD-110" vertex="1">
@@ -377,10 +377,10 @@
         <mxCell id="bJ_856CTpxn92Df5gTnD-233" value="&lt;span style=&quot;text-wrap: nowrap;&quot;&gt;DID Registrar API&lt;br&gt;&lt;br&gt;register&lt;br&gt;change_owner&lt;br&gt;add/update/revoke_service&lt;br&gt;add/update/revoke_verification_method&lt;br&gt;add/update/revoke_verification_relationship&lt;br&gt;&lt;/span&gt;" style="shape=note2;boundedLbl=1;whiteSpace=wrap;html=1;size=25;verticalAlign=top;align=center;" parent="1" vertex="1">
           <mxGeometry x="-10" y="1928" width="250" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="UQAl74JsN-pTrgw2dUXJ-5" value="Topic info" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="UQAl74JsN-pTrgw2dUXJ-5" value="Topic info" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="-316" y="3825" width="70" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="UQAl74JsN-pTrgw2dUXJ-12" value="&lt;span style=&quot;text-wrap: nowrap;&quot;&gt;HCS Topic API&lt;br&gt;&lt;/span&gt;&lt;br&gt;create/update_topic&lt;br&gt;get_topic_info" style="shape=note2;boundedLbl=1;whiteSpace=wrap;html=1;size=25;verticalAlign=top;align=center;" vertex="1" parent="1">
+        <mxCell id="UQAl74JsN-pTrgw2dUXJ-12" value="&lt;span style=&quot;text-wrap: nowrap;&quot;&gt;HCS Topic API&lt;br&gt;&lt;/span&gt;&lt;br&gt;create/update_topic&lt;br&gt;get_topic_info" style="shape=note2;boundedLbl=1;whiteSpace=wrap;html=1;size=25;verticalAlign=top;align=center;" parent="1" vertex="1">
           <mxGeometry x="29" y="3722" width="140" height="97" as="geometry" />
         </mxCell>
       </root>
