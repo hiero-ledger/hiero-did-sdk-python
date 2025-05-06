@@ -14,9 +14,11 @@ Maintainers are assigned the following scopes in this repository:
 
 <!-- Please keep this sorted alphabetically by github -->
 
-| Name | GitHub ID | Scope | LFID | Discord ID | Email | Company Affiliation |
-| ---- | --------- | ----- | ---- | ---------- | ----- | ------------------- |
-|      |           |       |      |            |       |                     |
+| Name               | GitHub ID         | Scope | LFID | Discord ID         | Email | Company Affiliation |
+| ------------------ | ----------------- | ----- | ---- | ------------------ | ----- | ------------------- |
+| Keith Kowal        | Reccetech         |       |      |                    |       | Hashgraph           |
+| Alexander Shenshin | AlexanderShenshin |       |      | alexander.shenshin |       | DSR Corporation     |
+| Diane Mueller      | dmueller2001      |       |      | hashdj             |       | Hedera              |
 
 ## Emeritus Maintainers
 
