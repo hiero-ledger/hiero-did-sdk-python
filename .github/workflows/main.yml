@@ -45,15 +45,15 @@ jobs:
 
       - name: Prepare Hiero Solo
         id: solo
-        uses: AlexanderShenshin/hiero-solo-action@v0.0.4-dev
+        uses: AlexanderShenshin/hiero-solo-action@v0.0.6-dev
         with:
           installMirrorNode: true
 
       - name: Run tests
         run: poetry run pytest tests --cov --cov-config=pyproject.toml --cov-report=xml
         env:
-          OPERATOR_ID: ${{ steps.solo.outputs.accountId }}
-          OPERATOR_KEY: ${{ steps.solo.outputs.privateKey }}
+          OPERATOR_ID: ${{ steps.solo.outputs.ed25519AccountId }}
+          OPERATOR_KEY: ${{ steps.solo.outputs.ed25519PrivateKey }}
           NETWORK: solo
 
       - name: Check typing
