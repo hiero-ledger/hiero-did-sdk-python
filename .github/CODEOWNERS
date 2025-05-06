@@ -2,11 +2,12 @@
 ##### Global Protection Rule ######
 ###################################
 # NOTE: This rule is overriden by the more specific rules below. This is the catch-all rule for all files not covered by the more specific rules below.
-*                                                   @hiero-ledger/github-maintainers
+*                                                   @hiero-ledger/hiero-did-sdk-python-maintainers @hiero-ledger/hiero-did-sdk-python-committers
 #########################
 ##### Example apps ######
 #########################
 
 # Protection Rules for Github Configuration Files and Actions Workflows
 /.github/                                           @hiero-ledger/github-maintainers
-/.github/workflows/                                 @hiero-ledger/github-maintainers
+/.github/workflows/                                 @hiero-ledger/github-maintainers @hiero-ledger/hiero-did-sdk-python-maintainers
+/.github/actions/                                   @hiero-ledger/github-maintainers @hiero-ledger/hiero-did-sdk-python-maintainers
