@@ -11,6 +11,9 @@ from hiero_did_sdk_python.anoncreds.utils import (
 
 PUBLISHER_DID_1 = "did:hedera:testnet:z6MkgUv5CvjRP6AsvEYqSRN7djB6p4zK9bcMQ93g5yK6Td7N_0.0.29613327"
 PUBLISHER_DID_2 = "did:hedera:testnet:z6MkgUv5CvjRP6AsvEYqSRN7djB6p4zK9bcMQ93g5yK6Td7N_0.0.29613330"
+NON_HEDERA_PUBLISHER_DID = (
+    "did:scid:vh:1:z6MkgUv5CvjRP6AsvEYqSRN7djB6p4zK9bcMQ93g5yK6Td7N_0?src=hedera:testnet:0.0.29613330"
+)
 
 TOPIC_ID_1 = "0.0.29613330"
 TOPIC_ID_2 = "0.0.29613340"
@@ -18,15 +21,17 @@ TOPIC_ID_2 = "0.0.29613340"
 
 class TestAnonCredsUtils:
     @pytest.mark.parametrize(
-        "publisher_did, object_type, topic_id",
+        "publisher_did, object_type, topic_id, non_hedera_publisher",
         [
-            (PUBLISHER_DID_1, AnonCredsObjectType.SCHEMA, TOPIC_ID_1),
-            (PUBLISHER_DID_2, AnonCredsObjectType.PUBLIC_CRED_DEF, TOPIC_ID_2),
-            (PUBLISHER_DID_1, AnonCredsObjectType.REV_REG, TOPIC_ID_2),
-            (PUBLISHER_DID_2, AnonCredsObjectType.REV_REG_ENTRY, TOPIC_ID_2),
+            (PUBLISHER_DID_1, AnonCredsObjectType.SCHEMA, TOPIC_ID_1, False),
+            (PUBLISHER_DID_2, AnonCredsObjectType.PUBLIC_CRED_DEF, TOPIC_ID_2, False),
+            (PUBLISHER_DID_1, AnonCredsObjectType.REV_REG, TOPIC_ID_2, False),
+            (PUBLISHER_DID_2, AnonCredsObjectType.REV_REG_ENTRY, TOPIC_ID_2, False),
+            (NON_HEDERA_PUBLISHER_DID, AnonCredsObjectType.SCHEMA, TOPIC_ID_1, True),
+            (NON_HEDERA_PUBLISHER_DID, AnonCredsObjectType.PUBLIC_CRED_DEF, TOPIC_ID_2, True),
         ],
     )
-    def test_parse_anoncreds_identifier(self, publisher_did, object_type, topic_id):
+    def test_parse_anoncreds_identifier(self, publisher_did, object_type, topic_id, non_hedera_publisher):
         identifier = ANONCREDS_IDENTIFIER_SEPARATOR.join([
             publisher_did,
             ANONCREDS_OBJECT_FAMILY,
@@ -35,7 +40,7 @@ class TestAnonCredsUtils:
             topic_id,
         ])
 
-        parsed_identifier = parse_anoncreds_identifier(identifier)
+        parsed_identifier = parse_anoncreds_identifier(identifier, parse_publisher_id=not non_hedera_publisher)
 
         assert parsed_identifier.publisher_did == publisher_did
         assert parsed_identifier.object_type == object_type

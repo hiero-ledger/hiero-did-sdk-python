@@ -24,7 +24,7 @@ class ParsedAnoncredsIdentifier:
     object_type: AnonCredsObjectType
 
 
-def parse_anoncreds_identifier(identifier: str) -> ParsedAnoncredsIdentifier:
+def parse_anoncreds_identifier(identifier: str, parse_publisher_id: bool = True) -> ParsedAnoncredsIdentifier:
     try:
         issuer_id, object_family, object_family_version, object_family_type, topic_id = identifier.split(
             ANONCREDS_IDENTIFIER_SEPARATOR
@@ -40,10 +40,11 @@ def parse_anoncreds_identifier(identifier: str) -> ParsedAnoncredsIdentifier:
     if object_family_type not in AnonCredsObjectType:
         raise Exception(f"Invalid AnonCreds object type: {object_family_type}")
 
-    try:
-        parse_identifier(issuer_id)
-    except Exception as issuer_id_error:
-        raise Exception(f"Cannot parse issuer identifier: {issuer_id_error}") from issuer_id_error
+    if parse_publisher_id:
+        try:
+            parse_identifier(issuer_id)
+        except Exception as issuer_id_error:
+            raise Exception(f"Cannot parse issuer identifier: {issuer_id_error}") from issuer_id_error
 
     return ParsedAnoncredsIdentifier(issuer_id, topic_id, AnonCredsObjectType(object_family_type))
 

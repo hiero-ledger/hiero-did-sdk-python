@@ -54,13 +54,12 @@ class HederaAnonCredsRegistry:
     """
 
     def __init__(
-        self,
-        client: Client,
-        cache_instance: Cache[str, object] | None = None,
+        self, client: Client, cache_instance: Cache[str, object] | None = None, require_hedera_issuer_id: bool = True
     ):
         self._client = client
         self._hcs_file_service = HcsFileService(client)
         self._hcs_topic_service = HcsTopicService(client)
+        self._require_hedera_issuer_id = require_hedera_issuer_id
 
         cache_instance = cache_instance or MemoryCache[str, object]()
 
@@ -81,7 +80,7 @@ class HederaAnonCredsRegistry:
             object: Schema resolution result
         """
         try:
-            parsed_identifier = parse_anoncreds_identifier(schema_id)
+            parsed_identifier = parse_anoncreds_identifier(schema_id, self._require_hedera_issuer_id)
 
             if parsed_identifier.object_type != AnonCredsObjectType.SCHEMA:
                 return GetSchemaResult(
@@ -168,7 +167,7 @@ class HederaAnonCredsRegistry:
             object: Credential definition resolution result
         """
         try:
-            parsed_identifier = parse_anoncreds_identifier(cred_def_id)
+            parsed_identifier = parse_anoncreds_identifier(cred_def_id, self._require_hedera_issuer_id)
 
             if parsed_identifier.object_type != AnonCredsObjectType.PUBLIC_CRED_DEF:
                 return GetCredDefResult(
@@ -264,7 +263,9 @@ class HederaAnonCredsRegistry:
             object: Revocation registry definition resolution result
         """
         try:
-            parsed_identifier = parse_anoncreds_identifier(revocation_registry_definition_id)
+            parsed_identifier = parse_anoncreds_identifier(
+                revocation_registry_definition_id, self._require_hedera_issuer_id
+            )
 
             if parsed_identifier.object_type != AnonCredsObjectType.REV_REG:
                 return GetRevRegDefResult(
