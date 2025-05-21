@@ -1,6 +1,6 @@
 # Hiero DID SDK Python
 
-[![Release](https://img.shields.io/github/v/release/hiero-ledger/hiero-did-sdk-python)](https://img.shields.io/github/v/release/hiero-ledger/hiero-did-sdk-python)
+[![Release](https://img.shields.io/github/v/release/hiero-ledger/hiero-did-sdk-python)](https://github.com/hiero-ledger/hiero-did-sdk-python/releases)
 [![Build status](https://img.shields.io/github/actions/workflow/status/hiero-ledger/hiero-did-sdk-python/main.yml?branch=main)](https://github.com/hiero-ledger/hiero-did-sdk-python/actions/workflows/main.yml?query=branch%3Amain)
 [![codecov](https://codecov.io/gh/hiero-ledger/hiero-did-sdk-python/branch/main/graph/badge.svg)](https://codecov.io/gh/hiero-ledger/hiero-did-sdk-python)
 [![Commit activity](https://img.shields.io/github/commit-activity/m/hiero-ledger/hiero-did-sdk-python)](https://img.shields.io/github/commit-activity/m/hiero-ledger/hiero-did-sdk-python)
