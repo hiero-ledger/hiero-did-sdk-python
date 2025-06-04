@@ -18,7 +18,7 @@ Maintainers are assigned the following scopes in this repository:
 | ------------------ | ----------------- | ----- | ---- | ------------------ | ----- | ------------------- |
 | Keith Kowal        | Reccetech         |       |      |                    |       | Hashgraph           |
 | Alexander Shenshin | AlexanderShenshin |       |      | alexander.shenshin |       | DSR Corporation     |
-| Diane Mueller      | dmueller2001      |       |      | hashdj             |       | Hedera              |
+| Diane Mueller      | dmueller2001      |       |      | hashdj             |       | Hedera Foundation   |
 
 ## Emeritus Maintainers
 
