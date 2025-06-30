@@ -259,7 +259,7 @@ class DidDocument(Serializable):
             case HcsDidEventTarget.DID_OWNER:
                 did_owner_event = cast(HcsDidUpdateDidOwnerEvent, event)
 
-                self.controller = cast(HcsDidUpdateDidOwnerEvent, event).get_owner_def()
+                self.controller = did_owner_event.get_owner_def()
                 self._public_key = did_owner_event.public_key
                 self._on_updated(message.timestamp)
             case HcsDidEventTarget.SERVICE:
