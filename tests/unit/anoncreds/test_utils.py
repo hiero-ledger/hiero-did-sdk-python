@@ -46,11 +46,11 @@ class TestAnonCredsUtils:
         [
             ("invalid_identifier", "Identifier has invalid structure"),
             (
-                f"{PUBLISHER_DID_1}/non-anoncreds/v0/{AnonCredsObjectType.SCHEMA}/{TOPIC_ID_1}",
+                f"{PUBLISHER_DID_1}/non-anoncreds/v1/{AnonCredsObjectType.SCHEMA}/{TOPIC_ID_1}",
                 "Identifier contains invalid object definition",
             ),
-            (f"{PUBLISHER_DID_1}/anoncreds/v0/INVALID_TYPE/{TOPIC_ID_1}", "Invalid AnonCreds object type"),
-            (f"invalid_did/anoncreds/v0/{AnonCredsObjectType.SCHEMA}/{TOPIC_ID_1}", "Cannot parse issuer identifier"),
+            (f"{PUBLISHER_DID_1}/anoncreds/v1/INVALID_TYPE/{TOPIC_ID_1}", "Invalid AnonCreds object type"),
+            (f"invalid_did/anoncreds/v1/{AnonCredsObjectType.SCHEMA}/{TOPIC_ID_1}", "Cannot parse issuer identifier"),
         ],
     )
     def test_parse_throws_on_invalid_data(self, invalid_identifier, expected_error_message):

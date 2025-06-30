@@ -85,7 +85,7 @@ class AnonCredsRevRegDef(Serializable):
 
 
 class RevRegDefHcsMetadata(TypedDict):
-    entries_topic_id: str
+    entriesTopicId: str
 
 
 @dataclass(frozen=True)
