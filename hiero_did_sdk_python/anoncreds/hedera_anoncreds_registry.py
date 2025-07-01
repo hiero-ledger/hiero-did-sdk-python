@@ -336,7 +336,7 @@ class HederaAnonCredsRegistry:
             entries_topic_id = await self._hcs_topic_service.create_topic(entries_topic_options, [issuer_key])
 
             rev_reg_def_with_metadata = RevRegDefWithHcsMetadata(
-                rev_reg_def=rev_reg_def, hcs_metadata={"entries_topic_id": entries_topic_id}
+                rev_reg_def=rev_reg_def, hcs_metadata={"entriesTopicId": entries_topic_id}
             )
 
             hcs_file_payload = rev_reg_def_with_metadata.to_json().encode()
@@ -391,7 +391,7 @@ class HederaAnonCredsRegistry:
                 )
 
             rev_reg_def = rev_reg_def_result.revocation_registry_definition
-            entries_topic_id = rev_reg_def_result.revocation_registry_definition_metadata.get("entries_topic_id")
+            entries_topic_id = rev_reg_def_result.revocation_registry_definition_metadata.get("entriesTopicId")
 
             if not entries_topic_id:
                 return GetRevListResult(
@@ -588,7 +588,7 @@ class HederaAnonCredsRegistry:
                 revocation_list_metadata={},
             )
 
-        entries_topic_id = rev_reg_def_result.revocation_registry_definition_metadata.get("entries_topic_id")
+        entries_topic_id = rev_reg_def_result.revocation_registry_definition_metadata.get("entriesTopicId")
 
         if not entries_topic_id:
             return RegisterRevListResult(

@@ -7,7 +7,7 @@ from ..utils.validation_result import ValidationResult
 ANONCREDS_IDENTIFIER_SEPARATOR = "/"
 
 ANONCREDS_OBJECT_FAMILY = "anoncreds"
-ANONCREDS_VERSION = "v0"
+ANONCREDS_VERSION = "v1"
 
 
 class AnonCredsObjectType(StrEnum):

@@ -148,7 +148,7 @@ class TestHederaAnonCredsRegistry:
                 revocation_registry_definition_id=Something,
             ),
             registration_metadata={},
-            revocation_registry_definition_metadata={"entries_topic_id": Something},
+            revocation_registry_definition_metadata={"entriesTopicId": Something},
         )
 
         rev_reg_def_id = registration_result.revocation_registry_definition_state.revocation_registry_definition_id
@@ -167,7 +167,7 @@ class TestHederaAnonCredsRegistry:
             revocation_registry_definition=rev_reg_def,
             revocation_registry_definition_id=rev_reg_def_id,
             resolution_metadata={},
-            revocation_registry_definition_metadata={"entries_topic_id": Something},
+            revocation_registry_definition_metadata={"entriesTopicId": Something},
         )
 
     async def test_creates_and_updates_rev_list(self, client: Client, Something):
@@ -200,7 +200,7 @@ class TestHederaAnonCredsRegistry:
         )
 
         rev_reg_entries_topic_id = rev_reg_def_registration_result.revocation_registry_definition_metadata.get(
-            "entries_topic_id"
+            "entriesTopicId"
         )
         assert rev_reg_entries_topic_id
 
