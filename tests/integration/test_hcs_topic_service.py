@@ -6,7 +6,7 @@ from hiero_did_sdk_python.hcs import HcsTopicOptions, HcsTopicService
 from .conftest import OPERATOR_KEY
 
 
-@pytest.mark.flaky(retries=3, delay=1)
+# @pytest.mark.flaky(retries=3, delay=1)
 @pytest.mark.asyncio(loop_scope="session")
 class TestHcsTopicService:
     async def test_creates_and_updates_hcs_topic(self, client: Client):
