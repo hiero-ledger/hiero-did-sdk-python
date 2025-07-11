@@ -4,6 +4,8 @@
 [![Build status](https://img.shields.io/github/actions/workflow/status/hiero-ledger/hiero-did-sdk-python/main.yml?branch=main)](https://github.com/hiero-ledger/hiero-did-sdk-python/actions/workflows/main.yml?query=branch%3Amain)
 [![codecov](https://codecov.io/gh/hiero-ledger/hiero-did-sdk-python/branch/main/graph/badge.svg)](https://codecov.io/gh/hiero-ledger/hiero-did-sdk-python)
 [![Commit activity](https://img.shields.io/github/commit-activity/m/hiero-ledger/hiero-did-sdk-python)](https://github.com/hiero-ledger/hiero-did-sdk-python/commits/main)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/hiero-ledger/hiero-did-sdk-python/badge)](https://scorecard.dev/viewer/?uri=github.com/hiero-ledger/hiero-did-sdk-python)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/10697/badge)](https://bestpractices.coreinfrastructure.org/projects/10697)
 [![License](https://img.shields.io/github/license/hiero-ledger/hiero-did-sdk-python)](https://github.com/hiero-ledger/hiero-did-sdk-python/blob/main/LICENSE)
 
 This repository contains the Python SDK that enables developers to manage Decentralized Identifiers (DIDs) and AnonCreds Verifiable Credentials on the Hedera network using the Hedera Consensus Service.
