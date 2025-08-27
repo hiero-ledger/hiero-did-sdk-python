@@ -124,8 +124,12 @@ class HederaDidResolver:
 
             if not did_document.deactivated:
                 document_meta.update({
-                    "created": datetime.date.fromtimestamp(cast(float, did_document.created)).isoformat(),
-                    "updated": datetime.date.fromtimestamp(cast(float, did_document.updated)).isoformat(),
+                    "created": datetime.date.fromtimestamp(cast(float, did_document.created)).isoformat()
+                    if did_document.created
+                    else None,
+                    "updated": datetime.date.fromtimestamp(cast(float, did_document.updated)).isoformat()
+                    if did_document.updated
+                    else None,
                 })
 
             status = {"deactivated": True} if did_document.deactivated else {}
