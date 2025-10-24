@@ -30,7 +30,8 @@ class HcsMessageTransaction:
         message_content = self.message.to_json()
 
         transaction = TopicMessageSubmitTransaction(
-            topic_id=TopicId.from_string(self.topic_id), message=message_content
+            topic_id=TopicId.from_string(self.topic_id),  # pyright: ignore - Hiero SDK seems to have a wrong expected type
+            message=message_content,
         )
 
         if self._transaction_builder:
