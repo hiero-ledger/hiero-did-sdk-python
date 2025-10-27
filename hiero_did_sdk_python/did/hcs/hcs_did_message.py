@@ -91,7 +91,7 @@ class HcsDidMessage(HcsMessage):
         match payload:
             case {"timestamp": timestamp, "operation": operation, "did": did, "event": event_base64}:
                 parsed_event = _parse_hcs_did_event(event_base64, operation)
-                return cls(operation=operation, did=did, event=parsed_event, timestamp=timestamp)
+                return cls(operation=DidDocumentOperation(operation), did=did, event=parsed_event, timestamp=timestamp)
             case _:
                 raise Exception(f"{cls.__name__} JSON parsing failed: Invalid JSON structure")
 

@@ -57,7 +57,8 @@ class HcsTopicService:
 
     async def update_topic(self, topic_id: str, topic_options: HcsTopicOptions, signing_keys: list[PrivateKey]):
         transaction = _set_topic_transaction_options(
-            TopicUpdateTransaction(topic_id=TopicId.from_string(topic_id)), topic_options
+            TopicUpdateTransaction(topic_id=TopicId.from_string(topic_id)),  # pyright: ignore - Hiero SDK seems to have a wrong expected type
+            topic_options,
         ).freeze_with(self._client)
         signed_transaction = await sign_hcs_transaction_async(transaction, signing_keys)
         await execute_hcs_transaction_async(signed_transaction, self._client)

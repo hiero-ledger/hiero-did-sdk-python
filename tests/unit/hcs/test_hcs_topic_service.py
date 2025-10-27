@@ -1,7 +1,7 @@
 from unittest.mock import NonCallableMagicMock
 
 import pytest
-from hiero_sdk_python import Client
+from hiero_sdk_python import Client, ResponseCode
 from pytest_mock import MockerFixture
 
 from hiero_did_sdk_python.hcs import HcsTopicOptions, HcsTopicService
@@ -18,6 +18,7 @@ def mock_topic_create_transaction(mocker: MockerFixture):
 
     mock_transaction_response = mocker.MagicMock()
     mock_transaction_response.topicId.__str__.return_value = MOCK_TOPIC_ID
+    mock_transaction_response.status = ResponseCode.SUCCESS
 
     mock_topic_create_transaction = MockTopicCreateTransaction.return_value
     mock_topic_create_transaction.freeze_with.return_value = mock_topic_create_transaction
@@ -33,6 +34,7 @@ def mock_topic_update_transaction(mocker: MockerFixture):
 
     mock_transaction_response = mocker.MagicMock()
     mock_transaction_response.topicId.__str__.return_value = MOCK_TOPIC_ID
+    mock_transaction_response.status = ResponseCode.SUCCESS
 
     mock_topic_update_transaction = MockTopicUpdateTransaction.return_value
     mock_topic_update_transaction.freeze_with.return_value = mock_topic_update_transaction

@@ -10,7 +10,7 @@ from ..hcs.hcs_message_resolver import HcsMessageResolver
 from ..utils.cache import Cache, MemoryCache, TimestampedRecord
 from .did_document import DidDocument
 from .did_error import DidErrorCode, DidException
-from .hcs.hcs_did_message import HcsDidMessage, HcsDidMessageEnvelope
+from .hcs.hcs_did_message import HcsDidMessageEnvelope
 from .hedera_did import HederaDid
 from .types import DIDDocument, DIDDocumentMetadata, DIDResolutionResult
 
@@ -102,11 +102,7 @@ class HederaDidResolver:
                         timestamp_from=Timestamp(int(last_updated_timestamp), 0),
                     ).execute(self._client)
 
-                    messages = [
-                        cast(HcsDidMessage, envelope.message) for envelope in cast(list[HcsDidMessageEnvelope], result)
-                    ]
-
-                    await did_document.process_messages(messages)
+                    await did_document.process_messages(cast(list[HcsDidMessageEnvelope], result))
 
                     self._cache.set(
                         topic_id,
@@ -128,8 +124,12 @@ class HederaDidResolver:
 
             if not did_document.deactivated:
                 document_meta.update({
-                    "created": datetime.date.fromtimestamp(cast(float, did_document.created)).isoformat(),
-                    "updated": datetime.date.fromtimestamp(cast(float, did_document.updated)).isoformat(),
+                    "created": datetime.date.fromtimestamp(cast(float, did_document.created)).isoformat()
+                    if did_document.created
+                    else None,
+                    "updated": datetime.date.fromtimestamp(cast(float, did_document.updated)).isoformat()
+                    if did_document.updated
+                    else None,
                 })
 
             status = {"deactivated": True} if did_document.deactivated else {}

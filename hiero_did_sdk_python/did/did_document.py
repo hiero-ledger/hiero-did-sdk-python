@@ -1,6 +1,9 @@
 import logging
 from typing import cast
 
+from hiero_sdk_python import PublicKey
+
+from ..utils.encoding import b58_to_bytes, b64_to_bytes
 from ..utils.ipfs import download_ipfs_document_by_cid
 from ..utils.serializable import Serializable
 from .did_document_operation import DidDocumentOperation
@@ -15,7 +18,7 @@ from .hcs.events.verification_method.hcs_did_update_verification_method_event im
 from .hcs.events.verification_relationship.hcs_did_update_verification_relationship_event import (
     HcsDidUpdateVerificationRelationshipEvent,
 )
-from .hcs.hcs_did_message import HcsDidMessage
+from .hcs.hcs_did_message import HcsDidMessage, HcsDidMessageEnvelope
 
 LOGGER = logging.getLogger(__name__)
 
@@ -56,20 +59,35 @@ class DidDocument(Serializable):
             DidDocumentJsonProperties.CAPABILITY_DELEGATION.value: [],
         }
 
-    async def process_messages(self, messages: list[HcsDidMessage]):
+        self._public_key: PublicKey | None = None
+
+    async def process_messages(self, envelopes: list[HcsDidMessageEnvelope]):
         """
         Process HCS DID messages - apply DID document state changes according to events.
 
         Args:
-            messages: HCS DID messages to process
+            envelopes: HCS DID message envelopes (message + signature) to process
 
         """
-        for message in messages:
-            if not self.controller and message.operation == DidDocumentOperation.CREATE:
+        for envelope in envelopes:
+            message = cast(HcsDidMessage, envelope.message)
+
+            if not self.controller:
                 event_target = message.event.event_target
                 if event_target != HcsDidEventTarget.DID_OWNER and event_target != HcsDidEventTarget.DID_DOCUMENT:
-                    LOGGER.warning("DID document is not registered, skipping DID update event...")
+                    LOGGER.warning("DID document is not registered, skipping DID event...")
                     continue
+
+            # TODO: Find a good way to support CID-based DID Document creation without workarounds and redundancy
+            # It's possible that we want to drop support for this case instead
+            is_signature_valid = (
+                message.event.event_target == HcsDidEventTarget.DID_DOCUMENT
+                or self._is_message_signature_valid(message, cast(str, envelope.signature))
+            )
+
+            if not is_signature_valid:
+                LOGGER.warning("HCS DID message signature is invalid, skipping event...")
+                continue
 
             match message.operation:
                 case DidDocumentOperation.CREATE:
@@ -154,6 +172,14 @@ class DidDocument(Serializable):
                     for verificationMethod in document.get(DidDocumentJsonProperties.VERIFICATION_METHOD, [])
                 }
 
+                root_verification_method = next(
+                    filter(
+                        lambda verification_method: "#did-root-key" in verification_method["id"],
+                        self.verification_methods.values(),
+                    )
+                )
+                self._public_key = PublicKey.from_bytes(b58_to_bytes(root_verification_method["publicKeyBase58"]))
+
                 self.verification_relationships[DidDocumentJsonProperties.ASSERTION_METHOD] = document.get(
                     DidDocumentJsonProperties.ASSERTION_METHOD, []
                 )
@@ -174,7 +200,10 @@ class DidDocument(Serializable):
                     LOGGER.warning(f"DID owner is already registered: {self.controller}, skipping event...")
                     return
 
-                self.controller = cast(HcsDidUpdateDidOwnerEvent, event).get_owner_def()
+                did_owner_event = cast(HcsDidUpdateDidOwnerEvent, event)
+
+                self.controller = did_owner_event.get_owner_def()
+                self._public_key = did_owner_event.public_key
                 self._on_activated(message.timestamp)
             case HcsDidEventTarget.SERVICE:
                 update_service_event = cast(HcsDidUpdateServiceEvent, event)
@@ -228,7 +257,10 @@ class DidDocument(Serializable):
 
         match event.event_target:
             case HcsDidEventTarget.DID_OWNER:
-                self.controller = cast(HcsDidUpdateDidOwnerEvent, event).get_owner_def()
+                did_owner_event = cast(HcsDidUpdateDidOwnerEvent, event)
+
+                self.controller = did_owner_event.get_owner_def()
+                self._public_key = did_owner_event.public_key
                 self._on_updated(message.timestamp)
             case HcsDidEventTarget.SERVICE:
                 update_service_event = cast(HcsDidUpdateServiceEvent, event)
@@ -353,6 +385,32 @@ class DidDocument(Serializable):
                 self._on_deactivated()
             case _:
                 LOGGER.warning(f"Delete {event.event_target} operation is not supported, skipping event...")
+
+    def _is_message_signature_valid(self, message: HcsDidMessage, signature: str) -> bool:
+        is_create_or_update_event = (
+            message.operation == DidDocumentOperation.CREATE or message.operation == DidDocumentOperation.UPDATE
+        )
+        is_did_owner_change_event = (
+            is_create_or_update_event and message.event.event_target == HcsDidEventTarget.DID_OWNER
+        )
+
+        public_key = (
+            cast(HcsDidUpdateDidOwnerEvent, message.event).public_key if is_did_owner_change_event else self._public_key
+        )
+
+        if not public_key:
+            raise Exception("Cannot verify HCS DID Message signature - controller public key is not defined")
+
+        message_bytes = message.to_json().encode()
+        signature_bytes = b64_to_bytes(signature)
+
+        try:
+            public_key.verify(signature_bytes, message_bytes)
+        except Exception as error:
+            LOGGER.warning(f"HCS DID Message signature verification failed with error: {error!s}")
+            return False
+
+        return True
 
     def _on_activated(self, timestamp: float):
         self.created = timestamp

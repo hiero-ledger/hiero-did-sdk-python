@@ -62,7 +62,6 @@ class HederaDid:
         else:
             self.topic_id = None
 
-        self._messages: list[HcsDidMessage] = []
         self.document: DidDocument | None = None
 
     async def register(self):
@@ -349,9 +348,8 @@ class HederaDid:
         if not self.identifier:
             raise Exception("Cannot handle DID resolution result: DID identifier is not defined")
 
-        self._messages = [cast(HcsDidMessage, envelope.message) for envelope in result]
         self.document = DidDocument(self.identifier)
-        await self.document.process_messages(self._messages)
+        await self.document.process_messages(result)
 
     def _assert_can_submit_transaction(self):
         if not self.identifier:

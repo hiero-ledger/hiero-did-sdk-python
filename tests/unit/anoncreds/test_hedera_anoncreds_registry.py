@@ -87,7 +87,7 @@ MOCK_REV_REG_DEF = AnonCredsRevRegDef(
 
 MOCK_REV_REG_ENTRIES_TOPIC_ID = "0.0.5063060"
 MOCK_REV_REG_DEF_WITH_METADATA = RevRegDefWithHcsMetadata(
-    rev_reg_def=MOCK_REV_REG_DEF, hcs_metadata={"entries_topic_id": MOCK_REV_REG_ENTRIES_TOPIC_ID}
+    rev_reg_def=MOCK_REV_REG_DEF, hcs_metadata={"entriesTopicId": MOCK_REV_REG_ENTRIES_TOPIC_ID}
 )
 
 MOCK_REV_ENTRY_1 = HcsRevRegEntryMessage(value=RevRegEntryValue(accum="accum-1", revoked=[5, 10]))
@@ -147,7 +147,7 @@ def mock_hcs_topic_service(mocker: MockerFixture):
     )
 
     mock_hsc_topic_service = MockHcsTopicService.return_value
-    mock_hsc_topic_service.create_topic.return_value = MOCK_REV_REG_DEF_WITH_METADATA.hcs_metadata["entries_topic_id"]
+    mock_hsc_topic_service.create_topic.return_value = MOCK_REV_REG_DEF_WITH_METADATA.hcs_metadata["entriesTopicId"]
 
     return mock_hsc_topic_service
 

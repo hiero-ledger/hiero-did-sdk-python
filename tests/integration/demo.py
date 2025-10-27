@@ -215,7 +215,7 @@ class TestDemo:
         )
 
         rev_reg_entries_topic_id = rev_reg_def_registration_result.revocation_registry_definition_metadata.get(
-            "entries_topic_id"
+            "entriesTopicId"
         )
         assert rev_reg_entries_topic_id
 

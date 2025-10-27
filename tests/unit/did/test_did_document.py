@@ -5,6 +5,7 @@ from hiero_sdk_python import PrivateKey
 
 from hiero_did_sdk_python.did.did_document import DidDocument
 from hiero_did_sdk_python.did.did_document_operation import DidDocumentOperation
+from hiero_did_sdk_python.did.hcs import HcsDidMessageEnvelope
 from hiero_did_sdk_python.did.hcs.events.document.hcs_did_create_did_document_event import HcsDidCreateDidDocumentEvent
 from hiero_did_sdk_python.did.hcs.events.document.hcs_did_delete_event import HcsDidDeleteEvent
 from hiero_did_sdk_python.did.hcs.events.owner.hcs_did_update_did_owner_event import HcsDidUpdateDidOwnerEvent
@@ -16,10 +17,20 @@ from hiero_did_sdk_python.did.hcs.events.verification_relationship.hcs_did_updat
     HcsDidUpdateVerificationRelationshipEvent,
 )
 from hiero_did_sdk_python.did.hcs.hcs_did_message import HcsDidMessage
-from hiero_did_sdk_python.utils.encoding import bytes_to_b58, multibase_encode
+from hiero_did_sdk_python.utils.encoding import bytes_to_b58, bytes_to_b64, multibase_encode
 from hiero_did_sdk_python.utils.keys import get_key_type
 
 from .common import IDENTIFIER_2, PRIVATE_KEY_ARR
+
+
+def _get_signed_envelopes(messages: list[HcsDidMessage], signing_key: PrivateKey):
+    result: list[HcsDidMessageEnvelope] = []
+
+    for message in messages:
+        message_bytes = message.to_json().encode()
+        result.append(HcsDidMessageEnvelope(message=message, signature=bytes_to_b64(signing_key.sign(message_bytes))))
+
+    return result
 
 
 class TestDidDocument:
@@ -45,7 +56,7 @@ class TestDidDocument:
         """ignores events til first create DIDOwner event"""
         doc = DidDocument(IDENTIFIER_2)
 
-        await doc.process_messages([
+        messages = [
             HcsDidMessage(
                 DidDocumentOperation.CREATE,
                 IDENTIFIER_2,
@@ -63,7 +74,9 @@ class TestDidDocument:
                 IDENTIFIER_2,
                 HcsDidUpdateServiceEvent(f"{IDENTIFIER_2}#service-2", "LinkedDomains", "https://test2.identity.com"),
             ),
-        ])
+        ]
+
+        await doc.process_messages(_get_signed_envelopes(messages, test_key.private_key))
 
         assert doc.get_json_payload() == {
             "@context": "https://www.w3.org/ns/did/v1",
@@ -121,7 +134,7 @@ class TestDidDocument:
                 {
                     "controller": IDENTIFIER_2,
                     "id": f"{IDENTIFIER_2}#did-root-key",
-                    "publicKeyMultibase": test_key.public_key_base58_multibase,
+                    "publicKeyBase58": test_key.public_key_base58,
                     "type": test_key.key_type,
                 }
             ],
@@ -130,7 +143,7 @@ class TestDidDocument:
 
         mock_download_ipfs_document_by_cid.return_value = test_doc
 
-        await doc.process_messages(messages)
+        await doc.process_messages(_get_signed_envelopes(messages, test_key.private_key))
 
         del test_doc["controller"]
 
@@ -152,7 +165,7 @@ class TestDidDocument:
 
         doc = DidDocument(IDENTIFIER_2)
 
-        await doc.process_messages(messages)
+        await doc.process_messages(_get_signed_envelopes(messages, test_key.private_key))
 
         assert doc.get_json_payload() == {
             "@context": "https://www.w3.org/ns/did/v1",
@@ -190,7 +203,7 @@ class TestDidDocument:
 
         doc = DidDocument(IDENTIFIER_2)
 
-        await doc.process_messages(messages)
+        await doc.process_messages(_get_signed_envelopes(messages, test_key.private_key))
 
         assert doc.get_json_payload() == {
             "@context": "https://www.w3.org/ns/did/v1",
@@ -246,7 +259,7 @@ class TestDidDocument:
 
         doc = DidDocument(IDENTIFIER_2)
 
-        await doc.process_messages(messages)
+        await doc.process_messages(_get_signed_envelopes(messages, test_key.private_key))
 
         assert doc.get_json_payload() == {
             "@context": "https://www.w3.org/ns/did/v1",
@@ -315,7 +328,7 @@ class TestDidDocument:
 
         doc = DidDocument(IDENTIFIER_2)
 
-        await doc.process_messages(messages)
+        await doc.process_messages(_get_signed_envelopes(messages, test_key.private_key))
 
         assert doc.get_json_payload() == {
             "@context": "https://www.w3.org/ns/did/v1",
@@ -436,7 +449,7 @@ class TestDidDocument:
 
         doc = DidDocument(IDENTIFIER_2)
 
-        await doc.process_messages(messages)
+        await doc.process_messages(_get_signed_envelopes(messages, test_key.private_key))
 
         assert doc.get_json_payload() == {
             "@context": "https://www.w3.org/ns/did/v1",
@@ -562,7 +575,7 @@ class TestDidDocument:
 
         doc = DidDocument(IDENTIFIER_2)
 
-        await doc.process_messages(messages)
+        await doc.process_messages(_get_signed_envelopes(messages, test_key.private_key))
 
         assert doc.get_json_payload() == {
             "@context": "https://www.w3.org/ns/did/v1",

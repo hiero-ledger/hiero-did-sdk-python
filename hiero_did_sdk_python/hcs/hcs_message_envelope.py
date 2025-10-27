@@ -22,7 +22,7 @@ class HcsMessageEnvelope(HcsMessage):
             raise Exception("Message is already signed")
 
         message_bytes = self.message.to_json().encode()
-        signature_bytes = bytes(signing_key.sign(message_bytes))
+        signature_bytes = signing_key.sign(message_bytes)
 
         self.signature = bytes_to_b64(signature_bytes)
 
