@@ -28,7 +28,7 @@ class HcsTopicListener:
         self._query = (
             TopicMessageQuery(topic_id=TopicId.from_string(topic_id), start_time=Timestamp(0, 0).to_date())
             .set_max_backoff(2.0)
-            .set_max_attempts(5)
+            .set_max_attempts(10)
         )
 
     def set_start_time(self, start_time: Timestamp):
