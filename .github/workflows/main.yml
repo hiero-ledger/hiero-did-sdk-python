@@ -55,15 +55,15 @@ jobs:
 
       - name: Prepare Hiero Solo
         id: solo
-        uses: hiero-ledger/hiero-solo-action@71219540ac7f578e6ea4fc3c17575c0295e56163 # v0.9
+        uses: hiero-ledger/hiero-solo-action@b76850c1ac44466900f8e7412b309c3aa0f539c1 # v0.14
         with:
           installMirrorNode: true
 
       - name: Run tests
         run: poetry run pytest tests --cov --cov-config=pyproject.toml --cov-report=xml
         env:
-          OPERATOR_ID: ${{ steps.solo.outputs.ed25519AccountId }}
-          OPERATOR_KEY: ${{ steps.solo.outputs.ed25519PrivateKey }}
+          OPERATOR_ID: ${{ steps.solo.outputs.accountId }}
+          OPERATOR_KEY: ${{ steps.solo.outputs.privateKey }}
           NETWORK: solo
 
       - name: Check typing
