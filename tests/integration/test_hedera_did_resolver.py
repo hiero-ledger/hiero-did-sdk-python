@@ -89,7 +89,7 @@ class TestHederaDidResolver:
             "didDocumentMetadata": {
                 "created": Something,
                 "updated": Something,
-                "versionId": Something,
+                "deactivated": False,
             },
             "didResolutionMetadata": {
                 "contentType": "application/did+ld+json",
@@ -119,7 +119,6 @@ class TestHederaDidResolver:
                 "verificationMethod": [],
             },
             "didDocumentMetadata": {
-                "versionId": None,
                 "deactivated": True,
             },
             "didResolutionMetadata": {

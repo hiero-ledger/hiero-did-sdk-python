@@ -43,7 +43,7 @@ class Serializable:
             A JSON representation of this message
 
         """
-        return json.dumps(self.get_json_payload())
+        return json.dumps(self.get_json_payload(), separators=(",", ":"))
 
     @abstractmethod
     def get_json_payload(self) -> dict:

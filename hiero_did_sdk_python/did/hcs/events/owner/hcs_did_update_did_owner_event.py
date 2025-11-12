@@ -5,7 +5,7 @@ from hiero_sdk_python import PublicKey
 
 from .....did.types import SupportedKeyType
 from .....utils.encoding import b58_to_bytes, bytes_to_b58
-from ....utils import is_owner_event_id_valid
+from ....utils import is_valid_did
 from ..hcs_did_event import HcsDidEvent
 from ..hcs_did_event_target import HcsDidEventTarget
 
@@ -19,8 +19,8 @@ class HcsDidUpdateDidOwnerEvent(HcsDidEvent):
     event_target: ClassVar[HcsDidEventTarget] = HcsDidEventTarget.DID_OWNER
 
     def __post_init__(self):
-        if not is_owner_event_id_valid(self.id_):
-            raise Exception("Event ID is invalid. Expected format: {did}#did-root-key")
+        if not is_valid_did(self.id_):
+            raise Exception("Event ID is invalid. Expected Hedera DID format")
 
     def get_owner_def(self):
         return {
@@ -28,6 +28,13 @@ class HcsDidUpdateDidOwnerEvent(HcsDidEvent):
             "type": self.type_,
             "controller": self.controller,
             "publicKeyBase58": bytes_to_b58(self.public_key.to_bytes_raw()),
+        }
+
+    def get_controller_verification_method(self):
+        owner_def = self.get_owner_def()
+        return {
+            **owner_def,
+            "id": f"{owner_def["id"]}#did-root-key",
         }
 
     @classmethod

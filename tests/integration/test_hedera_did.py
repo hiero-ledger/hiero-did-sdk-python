@@ -102,7 +102,7 @@ class TestHederaDid:
             await asyncio.sleep(5)
 
             did_topic_messages = await resolve_did_topic_messages(did.topic_id, client)
-            assert len(did_topic_messages) == 2
+            assert len(did_topic_messages) == 3
 
     class TestResolve:
         async def test_throws_if_not_registered(self, client: Client):

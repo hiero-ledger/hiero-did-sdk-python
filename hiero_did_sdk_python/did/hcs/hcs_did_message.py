@@ -1,5 +1,5 @@
 import json
-import time
+from datetime import UTC, datetime
 
 from ...hcs import HcsMessage, HcsMessageEnvelope
 from ...utils.encoding import b64_to_str, str_to_b64
@@ -61,11 +61,13 @@ def _parse_hcs_did_event(event_base64: str, operation: DidDocumentOperation) -> 
 
 
 class HcsDidMessage(HcsMessage):
-    def __init__(self, operation: DidDocumentOperation, did: str, event: HcsDidEvent, timestamp: float = time.time()):
+    def __init__(
+        self, operation: DidDocumentOperation, did: str, event: HcsDidEvent, timestamp: datetime | None = None
+    ):
         self.operation = operation
         self.did = did
         self.event = event
-        self.timestamp = timestamp
+        self.timestamp = timestamp or datetime.now(UTC)
 
     @property
     def event_base64(self):
@@ -91,13 +93,18 @@ class HcsDidMessage(HcsMessage):
         match payload:
             case {"timestamp": timestamp, "operation": operation, "did": did, "event": event_base64}:
                 parsed_event = _parse_hcs_did_event(event_base64, operation)
-                return cls(operation=DidDocumentOperation(operation), did=did, event=parsed_event, timestamp=timestamp)
+                return cls(
+                    operation=DidDocumentOperation(operation),
+                    did=did,
+                    event=parsed_event,
+                    timestamp=datetime.fromisoformat(timestamp),
+                )
             case _:
                 raise Exception(f"{cls.__name__} JSON parsing failed: Invalid JSON structure")
 
     def get_json_payload(self):
         return {
-            "timestamp": self.timestamp,
+            "timestamp": self.timestamp.isoformat().replace("+00:00", "Z"),
             "operation": self.operation.value,
             "did": self.did,
             "event": self.event_base64,
