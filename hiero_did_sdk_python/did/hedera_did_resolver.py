@@ -1,4 +1,3 @@
-import datetime
 import time
 from enum import StrEnum
 from typing import cast
@@ -106,7 +105,12 @@ class HederaDidResolver:
 
                     self._cache.set(
                         topic_id,
-                        TimestampedRecord(did_document, did_document.updated or did_document.created or time.time()),
+                        TimestampedRecord(
+                            did_document,
+                            did_document.version_timestamp.timestamp()
+                            if did_document.version_timestamp
+                            else time.time(),
+                        ),
                     )
             else:
                 registered_did = HederaDid(identifier=did, client=self._client)
@@ -115,27 +119,26 @@ class HederaDidResolver:
 
                 self._cache.set(
                     topic_id,
-                    TimestampedRecord(did_document, did_document.updated or did_document.created or time.time()),
+                    TimestampedRecord(
+                        did_document,
+                        did_document.version_timestamp.timestamp() if did_document.version_timestamp else time.time(),
+                    ),
                 )
 
-            document_meta = {
-                "versionId": did_document.version_id,
-            }
+            document_meta: dict = {"deactivated": did_document.deactivated}
 
             if not did_document.deactivated:
                 document_meta.update({
-                    "created": datetime.date.fromtimestamp(cast(float, did_document.created)).isoformat()
+                    "created": did_document.created.isoformat().replace("+00:00", "Z")
                     if did_document.created
                     else None,
-                    "updated": datetime.date.fromtimestamp(cast(float, did_document.updated)).isoformat()
+                    "updated": did_document.updated.isoformat().replace("+00:00", "Z")
                     if did_document.updated
                     else None,
                 })
 
-            status = {"deactivated": True} if did_document.deactivated else {}
-
             return {
-                "didDocumentMetadata": cast(DIDDocumentMetadata, {**status, **document_meta}),
+                "didDocumentMetadata": cast(DIDDocumentMetadata, document_meta),
                 "didResolutionMetadata": {"contentType": "application/did+ld+json"},
                 "didDocument": cast(DIDDocument, did_document.get_json_payload()),
             }

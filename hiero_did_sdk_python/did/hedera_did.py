@@ -88,7 +88,7 @@ class HederaDid:
             )
 
         hcs_event = HcsDidUpdateDidOwnerEvent(
-            id_=f"{self.identifier}#did-root-key",
+            id_=self.identifier,
             controller=self.identifier,
             public_key=self._private_key.public_key(),
             type_=self._key_type,
@@ -124,7 +124,7 @@ class HederaDid:
         self._key_type = new_key_type
 
         hcs_event = HcsDidUpdateDidOwnerEvent(
-            id_=f"{self.identifier}#did-root-key",
+            id_=cast(str, self.identifier),
             controller=controller,
             public_key=self._private_key.public_key(),
             type_=self._key_type,

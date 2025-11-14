@@ -24,19 +24,15 @@ def is_valid_did(did: str) -> bool:
     if not identifier:
         return False
 
-    parse_identifier(identifier)
-    return True
+    try:
+        parse_identifier(identifier)
+        return True
+    except Exception:
+        return False
 
 
 def is_owner_event_id_valid(event_id: str) -> bool:
-    identifier, id_ = event_id.split("#") if "#" in event_id else [event_id, ""]
-
-    if not identifier or not id_:
-        return False
-
-    parse_identifier(identifier)
-
-    return bool(OWNER_KEY_POSTFIX_REGEX.match(id_))
+    return is_valid_did(event_id)
 
 
 def is_service_event_id_valid(event_id: str) -> bool:
@@ -45,9 +41,11 @@ def is_service_event_id_valid(event_id: str) -> bool:
     if not identifier or not id_:
         return False
 
-    parse_identifier(identifier)
-
-    return bool(SERVICE_ID_POSTFIX_REGEX.match(id_))
+    try:
+        parse_identifier(identifier)
+        return bool(SERVICE_ID_POSTFIX_REGEX.match(id_))
+    except Exception:
+        return False
 
 
 def is_key_event_id_valid(event_id: str) -> bool:
@@ -56,9 +54,11 @@ def is_key_event_id_valid(event_id: str) -> bool:
     if not identifier or not id_:
         return False
 
-    parse_identifier(identifier)
-
-    return bool(KEY_ID_POSTFIX_REGEX.match(id_))
+    try:
+        parse_identifier(identifier)
+        return bool(KEY_ID_POSTFIX_REGEX.match(id_))
+    except Exception:
+        return False
 
 
 @dataclass

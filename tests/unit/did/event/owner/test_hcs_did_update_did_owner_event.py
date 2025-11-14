@@ -20,8 +20,8 @@ class TestHcsDidUpdateDidOwnerEvent:
 
     def test_throws_if_id_not_valid(self, test_key):
         """Throws error if id is not valid"""
-        with pytest.raises(Exception, match="Event ID is invalid. Expected format: {did}#did-root-key"):
-            HcsDidUpdateDidOwnerEvent(IDENTIFIER_2, IDENTIFIER_2, test_key.public_key, test_key.key_type)
+        with pytest.raises(Exception, match="Event ID is invalid. Expected Hedera DID format"):
+            HcsDidUpdateDidOwnerEvent("invalid_id", IDENTIFIER_2, test_key.public_key, test_key.key_type)
 
     def test_get_id(self, event):
         """returns id that was passed via constructor"""

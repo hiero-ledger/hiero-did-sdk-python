@@ -1,6 +1,5 @@
 import pytest
 
-from hiero_did_sdk_python.did.did_error import DidException
 from hiero_did_sdk_python.did.hcs.events.document.hcs_did_create_did_document_event import HcsDidCreateDidDocumentEvent
 
 from ...common import IDENTIFIER_2
@@ -17,7 +16,7 @@ def event():
 class TestHcsDidCreateDidDocumentEvent:
     def test_error_not_valid(self):
         """throws error if id is not valid"""
-        with pytest.raises(DidException, match="DID string is invalid: topic ID is missing"):
+        with pytest.raises(Exception, match="DID is invalid"):
             HcsDidCreateDidDocumentEvent("example", CID)
 
     def test_get_id(self, event):

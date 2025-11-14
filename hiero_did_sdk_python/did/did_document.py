@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from typing import cast
 
 from hiero_sdk_python import PublicKey
@@ -29,7 +30,6 @@ class DidDocument(Serializable):
     Attributes:
         created: Creation timestamp
         updated: Last update timestamp
-        version_id: DID document version ID (equals to last update timestamp)
         deactivated: DID document deactivation status
         controller: Dictionary representing DID document controller info
         services: DID document services dictionary
@@ -42,9 +42,8 @@ class DidDocument(Serializable):
         self.id_ = id_
         self.context = DID_DOCUMENT_CONTEXT
 
-        self.created: float | None = None
-        self.updated: float | None = None
-        self.version_id: str | None = None
+        self.created: datetime | None = None
+        self.updated: datetime | None = None
         self.deactivated: bool = False
 
         self.controller: dict | None = None
@@ -60,6 +59,10 @@ class DidDocument(Serializable):
         }
 
         self._public_key: PublicKey | None = None
+
+    @property
+    def version_timestamp(self) -> datetime | None:
+        return self.updated or self.created
 
     async def process_messages(self, envelopes: list[HcsDidMessageEnvelope]):
         """
@@ -202,7 +205,7 @@ class DidDocument(Serializable):
 
                 did_owner_event = cast(HcsDidUpdateDidOwnerEvent, event)
 
-                self.controller = did_owner_event.get_owner_def()
+                self.controller = did_owner_event.get_controller_verification_method()
                 self._public_key = did_owner_event.public_key
                 self._on_activated(message.timestamp)
             case HcsDidEventTarget.SERVICE:
@@ -259,7 +262,7 @@ class DidDocument(Serializable):
             case HcsDidEventTarget.DID_OWNER:
                 did_owner_event = cast(HcsDidUpdateDidOwnerEvent, event)
 
-                self.controller = did_owner_event.get_owner_def()
+                self.controller = did_owner_event.get_controller_verification_method()
                 self._public_key = did_owner_event.public_key
                 self._on_updated(message.timestamp)
             case HcsDidEventTarget.SERVICE:
@@ -412,18 +415,15 @@ class DidDocument(Serializable):
 
         return True
 
-    def _on_activated(self, timestamp: float):
+    def _on_activated(self, timestamp: datetime):
         self.created = timestamp
         self.updated = timestamp
         self.deactivated = False
-        self.version_id = str(timestamp)
 
-    def _on_updated(self, timestamp: float):
+    def _on_updated(self, timestamp: datetime):
         self.updated = timestamp
-        self.version_id = str(timestamp)
 
     def _on_deactivated(self):
         self.created = None
         self.updated = None
         self.deactivated = True
-        self.version_id = None
