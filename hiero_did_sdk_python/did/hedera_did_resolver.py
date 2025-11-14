@@ -107,7 +107,9 @@ class HederaDidResolver:
                         topic_id,
                         TimestampedRecord(
                             did_document,
-                            did_document.timestamp.timestamp() if did_document.timestamp else time.time(),
+                            did_document.version_timestamp.timestamp()
+                            if did_document.version_timestamp
+                            else time.time(),
                         ),
                     )
             else:
@@ -119,7 +121,7 @@ class HederaDidResolver:
                     topic_id,
                     TimestampedRecord(
                         did_document,
-                        did_document.timestamp.timestamp() if did_document.timestamp else time.time(),
+                        did_document.version_timestamp.timestamp() if did_document.version_timestamp else time.time(),
                     ),
                 )
 

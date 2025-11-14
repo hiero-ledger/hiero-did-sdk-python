@@ -61,7 +61,7 @@ class DidDocument(Serializable):
         self._public_key: PublicKey | None = None
 
     @property
-    def timestamp(self) -> datetime | None:
+    def version_timestamp(self) -> datetime | None:
         return self.updated or self.created
 
     async def process_messages(self, envelopes: list[HcsDidMessageEnvelope]):
