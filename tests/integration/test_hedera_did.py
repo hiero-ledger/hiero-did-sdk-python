@@ -7,6 +7,7 @@ from hiero_sdk_python import Client, PrivateKey, PublicKey
 
 from hiero_did_sdk_python import DidException, HederaDid
 from hiero_did_sdk_python.did.hcs import HcsDidMessageEnvelope
+from hiero_did_sdk_python.did.types import SupportedKeyType
 from hiero_did_sdk_python.hcs import HcsMessageResolver
 from hiero_did_sdk_python.utils.encoding import b58_to_bytes, bytes_to_b58, multibase_encode
 from hiero_did_sdk_python.utils.keys import get_key_type
@@ -20,7 +21,7 @@ VALID_DID = "did:hedera:testnet:z6MkgUv5CvjRP6AsvEYqSRN7djB6p4zK9bcMQ93g5yK6Td7N
 VERIFICATION_PUBLIC_KEY_BASE58 = "87meAWt7t2zrDxo7qw3PVTjexKWReYWS75LH29THy8kb"
 VERIFICATION_PUBLIC_KEY = PublicKey.from_bytes(b58_to_bytes(VERIFICATION_PUBLIC_KEY_BASE58))
 VERIFICATION_PUBLIC_KEY_DER = VERIFICATION_PUBLIC_KEY.to_string_raw()
-VERIFICATION_PUBLIC_KEY_TYPE = "Ed25519VerificationKey2018"
+VERIFICATION_PUBLIC_KEY_TYPE: SupportedKeyType = "Ed25519VerificationKey2018"
 VERIFICATION_ID = f"did:hedera:testnet:z{VERIFICATION_PUBLIC_KEY_BASE58}_0.0.29617801#key-1"
 
 
@@ -260,14 +261,14 @@ class TestHederaDid:
             did = HederaDid(client=client, private_key_der=OPERATOR_KEY_DER)
 
             with pytest.raises(DidException, match="DID is not registered"):
-                await did.add_service(
+                await did.add_or_update_service(
                     id_=f"{did.identifier}#service-1",
                     service_type="LinkedDomains",
                     service_endpoint="https://example.com/vcs",
                 )
 
             with pytest.raises(DidException, match="DID is not registered"):
-                await did.update_service(
+                await did.add_or_update_service(
                     id_=f"{did.identifier}#service-1",
                     service_type="LinkedDomains",
                     service_endpoint="https://example.com/vcs",
@@ -281,14 +282,14 @@ class TestHederaDid:
             did = HederaDid(client=client, identifier=VALID_DID)
 
             with pytest.raises(DidException, match="Private key is required to submit DID event transaction"):
-                await did.add_service(
+                await did.add_or_update_service(
                     id_=f"{did.identifier}#service-1",
                     service_type="LinkedDomains",
                     service_endpoint="https://example.com/vcs",
                 )
 
             with pytest.raises(DidException, match="Private key is required to submit DID event transaction"):
-                await did.update_service(
+                await did.add_or_update_service(
                     id_=f"{did.identifier}#service-1",
                     service_type="LinkedDomains",
                     service_endpoint="https://example.com/vcs",
@@ -302,12 +303,12 @@ class TestHederaDid:
             did = HederaDid(client=client, identifier=VALID_DID, private_key_der=OPERATOR_KEY_DER)
 
             with pytest.raises(Exception, match="Event ID is invalid. Expected format: {did}#service-{number}"):
-                await did.add_service(
+                await did.add_or_update_service(
                     id_=f"{did.identifier}#invalid-1", service_type="LinkedDomains", service_endpoint="service-endpoint"
                 )
 
             with pytest.raises(Exception, match="Event ID is invalid. Expected format: {did}#service-{number}"):
-                await did.update_service(
+                await did.add_or_update_service(
                     id_=f"{did.identifier}#invalid-1", service_type="LinkedDomains", service_endpoint="service-endpoint"
                 )
 
@@ -319,7 +320,7 @@ class TestHederaDid:
             did = await create_and_register_new_did(client)
             assert did.topic_id
 
-            await did.add_service(
+            await did.add_or_update_service(
                 id_=f"{did.identifier}#service-1",
                 service_type="LinkedDomains",
                 service_endpoint="https://example.com/vcs",
@@ -361,12 +362,12 @@ class TestHederaDid:
             did = await create_and_register_new_did(client)
             assert did.topic_id
 
-            await did.add_service(
+            await did.add_or_update_service(
                 id_=f"{did.identifier}#service-1",
                 service_type="LinkedDomains",
                 service_endpoint="https://example.com/vcs",
             )
-            await did.update_service(
+            await did.add_or_update_service(
                 id_=f"{did.identifier}#service-1",
                 service_type="LinkedDomains",
                 service_endpoint="https://example.com/updated",
@@ -408,7 +409,7 @@ class TestHederaDid:
             did = await create_and_register_new_did(client)
             assert did.topic_id
 
-            await did.add_service(
+            await did.add_or_update_service(
                 id_=f"{did.identifier}#service-1",
                 service_type="LinkedDomains",
                 service_endpoint="https://example.com/vcs",
@@ -444,7 +445,7 @@ class TestHederaDid:
             did = await create_and_register_new_did(client)
             assert did.topic_id
 
-            await did.add_service(
+            await did.add_or_update_service(
                 id_=f"{did.identifier}#service-1",
                 service_type="LinkedDomains",
                 service_endpoint="https://example.com/vcs",
@@ -452,7 +453,7 @@ class TestHederaDid:
             await did.revoke_service(
                 id_=f"{did.identifier}#service-1",
             )
-            await did.add_service(
+            await did.add_or_update_service(
                 id_=f"{did.identifier}#service-1",
                 service_type="LinkedDomains",
                 service_endpoint="https://example.com/re-created",
@@ -495,7 +496,7 @@ class TestHederaDid:
             did = HederaDid(client=client, private_key_der=OPERATOR_KEY_DER)
 
             with pytest.raises(DidException, match="DID is not registered"):
-                await did.add_verification_method(
+                await did.add_or_update_verification_method(
                     id_=VERIFICATION_ID,
                     controller=VALID_DID,
                     public_key_der=VERIFICATION_PUBLIC_KEY_DER,
@@ -503,7 +504,7 @@ class TestHederaDid:
                 )
 
             with pytest.raises(DidException, match="DID is not registered"):
-                await did.update_verification_method(
+                await did.add_or_update_verification_method(
                     id_=VERIFICATION_ID,
                     controller=VALID_DID,
                     public_key_der=VERIFICATION_PUBLIC_KEY_DER,
@@ -518,7 +519,7 @@ class TestHederaDid:
             did = HederaDid(client=client, identifier=VALID_DID)
 
             with pytest.raises(DidException, match="Private key is required to submit DID event transaction"):
-                await did.add_verification_method(
+                await did.add_or_update_verification_method(
                     id_=VERIFICATION_ID,
                     controller=VALID_DID,
                     public_key_der=VERIFICATION_PUBLIC_KEY_DER,
@@ -526,7 +527,7 @@ class TestHederaDid:
                 )
 
             with pytest.raises(DidException, match="Private key is required to submit DID event transaction"):
-                await did.update_verification_method(
+                await did.add_or_update_verification_method(
                     id_=VERIFICATION_ID,
                     controller=VALID_DID,
                     public_key_der=VERIFICATION_PUBLIC_KEY_DER,
@@ -541,7 +542,7 @@ class TestHederaDid:
             did = HederaDid(client=client, identifier=VALID_DID, private_key_der=OPERATOR_KEY_DER)
 
             with pytest.raises(Exception, match="Event ID is invalid. Expected format: {did}#key-{number}"):
-                await did.add_verification_method(
+                await did.add_or_update_verification_method(
                     id_=f"{did.identifier}#invalid-1",
                     controller=VALID_DID,
                     public_key_der=OPERATOR_KEY.public_key().to_string(),
@@ -549,7 +550,7 @@ class TestHederaDid:
                 )
 
             with pytest.raises(Exception, match="Event ID is invalid. Expected format: {did}#key-{number}"):
-                await did.update_verification_method(
+                await did.add_or_update_verification_method(
                     id_=f"{did.identifier}#invalid-1",
                     controller=VALID_DID,
                     public_key_der=VERIFICATION_PUBLIC_KEY_DER,
@@ -565,7 +566,7 @@ class TestHederaDid:
             assert did.topic_id
             assert did.identifier
 
-            await did.add_verification_method(
+            await did.add_or_update_verification_method(
                 id_=VERIFICATION_ID,
                 controller=did.identifier,
                 public_key_der=VERIFICATION_PUBLIC_KEY_DER,
@@ -612,13 +613,13 @@ class TestHederaDid:
             updated_public_key = PublicKey.from_bytes(b58_to_bytes(updated_public_key_base58))
             updated_public_key_type = get_key_type(updated_public_key)
 
-            await did.add_verification_method(
+            await did.add_or_update_verification_method(
                 id_=VERIFICATION_ID,
                 controller=did.identifier,
                 public_key_der=VERIFICATION_PUBLIC_KEY_DER,
                 type_=VERIFICATION_PUBLIC_KEY_TYPE,
             )
-            await did.update_verification_method(
+            await did.add_or_update_verification_method(
                 id_=VERIFICATION_ID,
                 controller=did.identifier,
                 public_key_der=updated_public_key.to_string(),
@@ -661,7 +662,7 @@ class TestHederaDid:
             assert did.topic_id
             assert did.identifier
 
-            await did.add_verification_method(
+            await did.add_or_update_verification_method(
                 id_=VERIFICATION_ID,
                 controller=did.identifier,
                 public_key_der=VERIFICATION_PUBLIC_KEY_DER,
@@ -699,7 +700,7 @@ class TestHederaDid:
             did = HederaDid(client=client, private_key_der=OPERATOR_KEY_DER)
 
             with pytest.raises(DidException, match="DID is not registered"):
-                await did.add_verification_relationship(
+                await did.add_or_update_verification_relationship(
                     id_=VERIFICATION_ID,
                     relationship_type="assertionMethod",
                     controller=VALID_DID,
@@ -708,7 +709,7 @@ class TestHederaDid:
                 )
 
             with pytest.raises(DidException, match="DID is not registered"):
-                await did.update_verification_relationship(
+                await did.add_or_update_verification_relationship(
                     id_=VERIFICATION_ID,
                     relationship_type="assertionMethod",
                     controller=VALID_DID,
@@ -724,7 +725,7 @@ class TestHederaDid:
             did = HederaDid(client=client, identifier=VALID_DID)
 
             with pytest.raises(DidException, match="Private key is required to submit DID event transaction"):
-                await did.add_verification_relationship(
+                await did.add_or_update_verification_relationship(
                     id_=VERIFICATION_ID,
                     relationship_type="assertionMethod",
                     controller=VALID_DID,
@@ -733,7 +734,7 @@ class TestHederaDid:
                 )
 
             with pytest.raises(DidException, match="Private key is required to submit DID event transaction"):
-                await did.update_verification_relationship(
+                await did.add_or_update_verification_relationship(
                     id_=VERIFICATION_ID,
                     relationship_type="assertionMethod",
                     controller=VALID_DID,
@@ -749,7 +750,7 @@ class TestHederaDid:
             did = HederaDid(client=client, identifier=VALID_DID, private_key_der=OPERATOR_KEY_DER)
 
             with pytest.raises(Exception, match="Event ID is invalid. Expected format: {did}#key-{number}"):
-                await did.add_verification_relationship(
+                await did.add_or_update_verification_relationship(
                     id_=f"{did.identifier}#invalid-1",
                     relationship_type="assertionMethod",
                     controller=VALID_DID,
@@ -758,7 +759,7 @@ class TestHederaDid:
                 )
 
             with pytest.raises(Exception, match="Event ID is invalid. Expected format: {did}#key-{number}"):
-                await did.update_verification_relationship(
+                await did.add_or_update_verification_relationship(
                     id_=f"{did.identifier}#invalid-1",
                     relationship_type="assertionMethod",
                     controller=VALID_DID,
@@ -777,7 +778,7 @@ class TestHederaDid:
             assert did.topic_id
             assert did.identifier
 
-            await did.add_verification_relationship(
+            await did.add_or_update_verification_relationship(
                 id_=VERIFICATION_ID,
                 relationship_type="authentication",
                 controller=did.identifier,
@@ -825,14 +826,14 @@ class TestHederaDid:
             updated_public_key = PublicKey.from_bytes(b58_to_bytes(updated_public_key_base58))
             updated_public_key_type = get_key_type(updated_public_key)
 
-            await did.add_verification_relationship(
+            await did.add_or_update_verification_relationship(
                 id_=VERIFICATION_ID,
                 relationship_type="assertionMethod",
                 controller=did.identifier,
                 public_key_der=VERIFICATION_PUBLIC_KEY_DER,
                 type_=VERIFICATION_PUBLIC_KEY_TYPE,
             )
-            await did.update_verification_relationship(
+            await did.add_or_update_verification_relationship(
                 id_=VERIFICATION_ID,
                 relationship_type="assertionMethod",
                 controller=did.identifier,
@@ -876,7 +877,7 @@ class TestHederaDid:
             assert did.topic_id
             assert did.identifier
 
-            await did.add_verification_relationship(
+            await did.add_or_update_verification_relationship(
                 id_=VERIFICATION_ID,
                 relationship_type="keyAgreement",
                 controller=did.identifier,

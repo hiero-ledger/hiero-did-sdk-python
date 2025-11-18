@@ -44,7 +44,7 @@ did = HederaDid(client=client, private_key_der="private_key_der")
 
 await did.register()
 
-await did.add_service(
+await did.add_or_update_service(
     id_=f"{did.identifier}#service-1", service_type="LinkedDomains", service_endpoint="https://example.com/vcs"
 )
 ```
