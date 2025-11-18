@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hiero-did-sdk-python"
-version = "0.1.2"
+version = "0.1.3"
 description = "The repository contains the Python SDK for managing DID Documents and Anoncreds Verifiable Credentials registry using Hedera Consensus Service."
 authors = ["Alexander Shenshin <alexander.shenshin@dsr-corporation.com>", "Paulo Caldas <paulo.caldas@dsr-corporation.com>"]
 repository = "https://github.com/hiero-ledger/hiero-did-sdk-python"
