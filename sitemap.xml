@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://hiero-ledger.github.io/hiero-did-sdk-python/</loc>
+         <lastmod>2025-11-20</lastmod>
+    </url>
+    <url>
+         <loc>https://hiero-ledger.github.io/hiero-did-sdk-python/configuration/</loc>
+         <lastmod>2025-11-20</lastmod>
+    </url>
+    <url>
+         <loc>https://hiero-ledger.github.io/hiero-did-sdk-python/getting-started/</loc>
+         <lastmod>2025-11-20</lastmod>
+    </url>
+    <url>
+         <loc>https://hiero-ledger.github.io/hiero-did-sdk-python/modules/anoncreds/</loc>
+         <lastmod>2025-11-20</lastmod>
+    </url>
+    <url>
+         <loc>https://hiero-ledger.github.io/hiero-did-sdk-python/modules/common/</loc>
+         <lastmod>2025-11-20</lastmod>
+    </url>
+    <url>
+         <loc>https://hiero-ledger.github.io/hiero-did-sdk-python/modules/did/</loc>
+         <lastmod>2025-11-20</lastmod>
+    </url>
+</urlset>
