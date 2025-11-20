@@ -57,7 +57,7 @@ class TestDidDocument:
 
         messages = [
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateServiceEvent(f"{IDENTIFIER_2}#service-1", "LinkedDomains", "https://test.identity.com"),
             ),
@@ -67,7 +67,7 @@ class TestDidDocument:
                 HcsDidUpdateDidOwnerEvent(IDENTIFIER_2, IDENTIFIER_2, test_key.public_key, test_key.key_type),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateServiceEvent(f"{IDENTIFIER_2}#service-2", "LinkedDomains", "https://test2.identity.com"),
             ),
@@ -223,7 +223,7 @@ class TestDidDocument:
                 HcsDidUpdateDidOwnerEvent(IDENTIFIER_2, IDENTIFIER_2, test_key.public_key, test_key.key_type),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateVerificationRelationshipEvent(
                     f"{IDENTIFIER_2}#key-2",
@@ -291,19 +291,19 @@ class TestDidDocument:
                 HcsDidUpdateDidOwnerEvent(IDENTIFIER_2, IDENTIFIER_2, test_key.public_key, test_key.key_type),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateServiceEvent(f"{IDENTIFIER_2}#service-1", "LinkedDomains", "https://test.identity.com"),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateVerificationMethodEvent(
                     f"{IDENTIFIER_2}#key-1", IDENTIFIER_2, key1.public_key(), key1_type
                 ),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateVerificationRelationshipEvent(
                     f"{IDENTIFIER_2}#key-2", key2.public_key(), IDENTIFIER_2, "capabilityDelegation", key2_type
@@ -378,31 +378,31 @@ class TestDidDocument:
                 HcsDidUpdateDidOwnerEvent(IDENTIFIER_2, IDENTIFIER_2, test_key.public_key, test_key.key_type),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateServiceEvent(f"{IDENTIFIER_2}#service-1", "LinkedDomains", "https://test.identity.com"),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateServiceEvent(f"{IDENTIFIER_2}#service-2", "LinkedDomains", "https://test2.identity.com"),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateVerificationMethodEvent(
                     f"{IDENTIFIER_2}#key-1", IDENTIFIER_2, key1.public_key(), key1_type
                 ),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateVerificationRelationshipEvent(
                     f"{IDENTIFIER_2}#key-2", key2.public_key(), IDENTIFIER_2, "capabilityDelegation", key2_type
                 ),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateVerificationRelationshipEvent(
                     f"{IDENTIFIER_2}#key-3", key3.public_key(), IDENTIFIER_2, "authentication", key3_type
@@ -501,31 +501,31 @@ class TestDidDocument:
                 HcsDidUpdateDidOwnerEvent(IDENTIFIER_2, IDENTIFIER_2, test_key.public_key, test_key.key_type),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateServiceEvent(f"{IDENTIFIER_2}#service-1", "LinkedDomains", "https://test.identity.com"),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateServiceEvent(f"{IDENTIFIER_2}#service-2", "LinkedDomains", "https://test2.identity.com"),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateVerificationMethodEvent(
                     f"{IDENTIFIER_2}#key-1", IDENTIFIER_2, key1.public_key(), key1_type
                 ),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateVerificationRelationshipEvent(
                     f"{IDENTIFIER_2}#key-2", key2.public_key(), IDENTIFIER_2, "capabilityDelegation", key2_type
                 ),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateVerificationRelationshipEvent(
                     f"{IDENTIFIER_2}#key-3", key3.public_key(), IDENTIFIER_2, "authentication", key3_type

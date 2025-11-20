@@ -1,5 +1,5 @@
 import logging
-from typing import Literal, cast
+from typing import cast
 
 from hiero_sdk_python import Client, PrivateKey, PublicKey, TopicMessageSubmitTransaction
 from hiero_sdk_python.transaction.transaction import Transaction
@@ -153,29 +153,19 @@ class HederaDid:
 
         await self._submit_transaction(DidDocumentOperation.DELETE, HcsDidDeleteEvent())
 
-    async def add_service(self, id_: str, service_type: DidServiceType, service_endpoint: str):
-        """Add Service to DID document
+    async def add_or_update_service(self, id_: str, service_type: DidServiceType, service_endpoint: str):
+        """Add or update DID document service
 
         Args:
             id_: Service ID to create
             service_type: DID service type
             service_endpoint: Service endpoint
         """
-        await self._add_or_update_service(
-            DidDocumentOperation.CREATE, id_=id_, type_=service_type, service_endpoint=service_endpoint
-        )
+        self._assert_can_submit_transaction()
 
-    async def update_service(self, id_: str, service_type: DidServiceType, service_endpoint: str):
-        """Update existing DID document service
+        hcs_event = HcsDidUpdateServiceEvent(id_=id_, type_=service_type, service_endpoint=service_endpoint)
 
-        Args:
-            id_: Service ID to update
-            service_type: DID service type
-            service_endpoint: Service endpoint
-        """
-        await self._add_or_update_service(
-            DidDocumentOperation.UPDATE, id_=id_, type_=service_type, service_endpoint=service_endpoint
-        )
+        await self._submit_transaction(DidDocumentOperation.UPDATE, hcs_event)
 
     async def revoke_service(self, id_: str):
         """Revoke existing DID document service
@@ -188,14 +178,14 @@ class HederaDid:
         hcs_event = HcsDidRevokeServiceEvent(id_)
         await self._submit_transaction(DidDocumentOperation.REVOKE, hcs_event)
 
-    async def add_verification_method(
+    async def add_or_update_verification_method(
         self,
         id_: str,
         controller: str,
         public_key_der: str,
         type_: SupportedKeyType,
     ):
-        """Add verification method to DID document
+        """Add or update DID document verification method
 
         Args:
             id_: Verification method ID to create
@@ -203,36 +193,14 @@ class HederaDid:
             public_key_der: Verification method public key encoded in DER format
             type_: Verification method key type
         """
-        await self._add_or_update_verification_method(
-            DidDocumentOperation.CREATE,
-            id_=id_,
-            controller=controller,
-            public_key=PublicKey.from_string(public_key_der),
-            type_=type_,
+
+        self._assert_can_submit_transaction()
+
+        hcs_event = HcsDidUpdateVerificationMethodEvent(
+            id_=id_, controller=controller, public_key=PublicKey.from_string(public_key_der), type_=type_
         )
 
-    async def update_verification_method(
-        self,
-        id_: str,
-        controller: str,
-        public_key_der: str,
-        type_: SupportedKeyType,
-    ):
-        """Update existing DID document verification method
-
-        Args:
-            id_: Verification method ID to update
-            controller: Verification method controller ID
-            public_key_der: Verification method public key encoded in DER format
-            type_: Verification method key type
-        """
-        await self._add_or_update_verification_method(
-            DidDocumentOperation.UPDATE,
-            id_=id_,
-            controller=controller,
-            public_key=PublicKey.from_string(public_key_der),
-            type_=type_,
-        )
+        await self._submit_transaction(DidDocumentOperation.UPDATE, hcs_event)
 
     async def revoke_verification_method(self, id_: str):
         """Revoke existing DID document verification method
@@ -245,7 +213,7 @@ class HederaDid:
         hcs_event = HcsDidRevokeVerificationMethodEvent(id_)
         await self._submit_transaction(DidDocumentOperation.REVOKE, hcs_event)
 
-    async def add_verification_relationship(
+    async def add_or_update_verification_relationship(
         self,
         id_: str,
         controller: str,
@@ -253,7 +221,7 @@ class HederaDid:
         relationship_type: VerificationRelationshipType,
         type_: SupportedKeyType,
     ):
-        """Add verification relationship to DID document
+        """Add or update DID document verification relationship
 
         Args:
             id_: Verification relationship ID to create
@@ -262,8 +230,10 @@ class HederaDid:
             relationship_type: Verification relationship type
             type_: Verification relationship key type
         """
-        await self._add_or_update_verification_relationship(
-            DidDocumentOperation.CREATE,
+
+        self._assert_can_submit_transaction()
+
+        hcs_event = HcsDidUpdateVerificationRelationshipEvent(
             id_=id_,
             controller=controller,
             public_key=PublicKey.from_string(public_key_der),
@@ -271,31 +241,7 @@ class HederaDid:
             type_=type_,
         )
 
-    async def update_verification_relationship(
-        self,
-        id_: str,
-        controller: str,
-        public_key_der: str,
-        relationship_type: VerificationRelationshipType,
-        type_: SupportedKeyType,
-    ):
-        """Update existing DID document verification relationship
-
-        Args:
-            id_: Verification relationship ID to update
-            controller: Verification relationship controller ID
-            public_key_der: Verification relationship public key encoded in DER format
-            relationship_type: Verification relationship type
-            type_: Verification relationship key type
-        """
-        await self._add_or_update_verification_relationship(
-            DidDocumentOperation.UPDATE,
-            id_=id_,
-            public_key=PublicKey.from_string(public_key_der),
-            controller=controller,
-            relationship_type=relationship_type,
-            type_=type_,
-        )
+        await self._submit_transaction(DidDocumentOperation.UPDATE, hcs_event)
 
     async def revoke_verification_relationship(self, id_: str, relationship_type: VerificationRelationshipType):
         """Revoke existing DID document verification relationship
@@ -322,27 +268,6 @@ class HederaDid:
             return message_submit_transaction.freeze_with(self._client).sign(self._private_key)
 
         await HcsMessageTransaction(self.topic_id, envelope, build_did_transaction).execute(self._client)
-
-    async def _add_or_update_service(
-        self, operation: Literal[DidDocumentOperation.CREATE, DidDocumentOperation.UPDATE], **kwargs
-    ):
-        self._assert_can_submit_transaction()
-
-        await self._submit_transaction(operation, HcsDidUpdateServiceEvent(**kwargs))
-
-    async def _add_or_update_verification_method(
-        self, operation: Literal[DidDocumentOperation.CREATE, DidDocumentOperation.UPDATE], **kwargs
-    ):
-        self._assert_can_submit_transaction()
-
-        await self._submit_transaction(operation, HcsDidUpdateVerificationMethodEvent(**kwargs))
-
-    async def _add_or_update_verification_relationship(
-        self, operation: Literal[DidDocumentOperation.CREATE, DidDocumentOperation.UPDATE], **kwargs
-    ):
-        self._assert_can_submit_transaction()
-
-        await self._submit_transaction(operation, HcsDidUpdateVerificationRelationshipEvent(**kwargs))
 
     async def _handle_resolution_result(self, result: list[HcsDidMessageEnvelope]):
         if not self.identifier:
