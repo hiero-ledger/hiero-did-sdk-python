@@ -13,10 +13,10 @@ packages = [
 [tool.poetry.dependencies]
 aiohttp = "^3.10.9"
 aiohttp_retry = "^2.9.0"
-python = ">=3.12,<4.0"
+python = ">=3.12,<3.14"
 did-resolver = "0.0.3"
 base58 = "^2.1.1"
-hiero_sdk_python = "0.1.6"
+hiero_sdk_python = "0.1.9"
 zstandard = "^0.23.0"
 
 [tool.poetry.group.dev.dependencies]
