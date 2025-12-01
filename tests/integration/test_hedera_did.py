@@ -12,17 +12,17 @@ from hiero_did_sdk_python.hcs import HcsMessageResolver
 from hiero_did_sdk_python.utils.encoding import b58_to_bytes, bytes_to_b58, multibase_encode
 from hiero_did_sdk_python.utils.keys import get_key_type
 
-from .conftest import OPERATOR_KEY, OPERATOR_KEY_DER, OPERATOR_KEY_TYPE
+from .conftest import NETWORK, OPERATOR_KEY, OPERATOR_KEY_DER, OPERATOR_KEY_TYPE
 
 TOPIC_REGEX = re.compile(r"^0\.0\.[0-9]{3,}")
 
-VALID_DID = "did:hedera:testnet:z6MkgUv5CvjRP6AsvEYqSRN7djB6p4zK9bcMQ93g5yK6Td7N_0.0.29613327"
+VALID_DID = f"did:hedera:{NETWORK}:z6MkgUv5CvjRP6AsvEYqSRN7djB6p4zK9bcMQ93g5yK6Td7N_0.0.29613327"
 
 VERIFICATION_PUBLIC_KEY_BASE58 = "87meAWt7t2zrDxo7qw3PVTjexKWReYWS75LH29THy8kb"
 VERIFICATION_PUBLIC_KEY = PublicKey.from_bytes(b58_to_bytes(VERIFICATION_PUBLIC_KEY_BASE58))
 VERIFICATION_PUBLIC_KEY_DER = VERIFICATION_PUBLIC_KEY.to_string_raw()
 VERIFICATION_PUBLIC_KEY_TYPE: SupportedKeyType = "Ed25519VerificationKey2018"
-VERIFICATION_ID = f"did:hedera:testnet:z{VERIFICATION_PUBLIC_KEY_BASE58}_0.0.29617801#key-1"
+VERIFICATION_ID = f"did:hedera:{NETWORK}:z{VERIFICATION_PUBLIC_KEY_BASE58}_0.0.29617801#key-1"
 
 
 async def create_and_register_new_did(client: Client, private_key_der=OPERATOR_KEY_DER):
@@ -35,7 +35,7 @@ async def resolve_did_topic_messages(topic_id: str, client: Client):
     return await HcsMessageResolver(topic_id, HcsDidMessageEnvelope).execute(client)
 
 
-@pytest.mark.flaky(retries=3, delay=1)
+# @pytest.mark.flaky(retries=3, delay=1)
 @pytest.mark.asyncio(loop_scope="session")
 class TestHederaDid:
     class TestRegister:
@@ -61,12 +61,12 @@ class TestHederaDid:
             did = await create_and_register_new_did(client)
             assert did.topic_id
 
-            expected_identifier = f"did:hedera:testnet:{multibase_encode(bytes(OPERATOR_KEY.public_key().to_bytes_raw()), "base58btc")}_{did.topic_id}"
+            expected_identifier = f"did:hedera:{NETWORK}:{multibase_encode(bytes(OPERATOR_KEY.public_key().to_bytes_raw()), "base58btc")}_{did.topic_id}"
 
             assert bool(TOPIC_REGEX.match(did.topic_id))
             assert did.identifier == expected_identifier
             assert cast(PrivateKey, did._private_key).to_string() == OPERATOR_KEY.to_string()
-            assert did.network == "testnet"
+            assert did.network == NETWORK
 
             # Wait until changes are propagated to Hedera Mirror node
             await asyncio.sleep(5)
@@ -199,7 +199,7 @@ class TestHederaDid:
             assert len(did_topic_messages) == 2
 
     class TestChangeOwner:
-        NEW_OWNER_ID = "did:hedera:testnet:z6MkgUv5CvjRP6AsvEYqSRN7djB6p4zK9bcMQ93g5yK6Td7N_0.0.99999999"
+        NEW_OWNER_ID = f"did:hedera:{NETWORK}:z6MkgUv5CvjRP6AsvEYqSRN7djB6p4zK9bcMQ93g5yK6Td7N_0.0.99999999"
 
         async def test_throws_error_if_not_registered(self, client: Client):
             """Throws error if DID is not registered"""

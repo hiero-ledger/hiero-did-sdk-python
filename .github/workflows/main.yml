@@ -53,11 +53,18 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Prepare Hiero Solo
+        id: solo
+        uses: hiero-ledger/hiero-solo-action@fbca3e7a99ce9aa8a250563a81187abe115e0dad # v0.16
+        with:
+          installMirrorNode: true
+
       - name: Run tests
         run: poetry run pytest tests --cov --cov-config=pyproject.toml --cov-report=xml
         env:
-          OPERATOR_ID: ${{ secrets.OPERATOR_ID }}
-          OPERATOR_KEY: ${{ secrets.OPERATOR_KEY }}
+          OPERATOR_ID: ${{ steps.solo.outputs.accountId }}
+          OPERATOR_KEY: ${{ steps.solo.outputs.privateKey }}
+          NETWORK: solo
 
       - name: Check typing
         run: poetry run pyright

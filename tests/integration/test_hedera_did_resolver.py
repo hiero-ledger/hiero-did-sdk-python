@@ -9,7 +9,7 @@ from hiero_did_sdk_python.utils.encoding import bytes_to_b58
 from .conftest import OPERATOR_KEY, OPERATOR_KEY_DER, OPERATOR_KEY_TYPE
 
 
-@pytest.mark.flaky(retries=3, delay=1)
+# @pytest.mark.flaky(retries=3, delay=1)
 @pytest.mark.asyncio(loop_scope="session")
 class TestHederaDidResolver:
     async def test_returns_error_response(self, client: Client):
