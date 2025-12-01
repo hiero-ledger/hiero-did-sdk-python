@@ -17,7 +17,7 @@ def mock_topic_create_transaction(mocker: MockerFixture):
     MockTopicCreateTransaction = mocker.patch("hiero_did_sdk_python.hcs.hcs_topic_service.TopicCreateTransaction")
 
     mock_transaction_response = mocker.MagicMock()
-    mock_transaction_response.topicId.__str__.return_value = MOCK_TOPIC_ID
+    mock_transaction_response.topic_id.__str__.return_value = MOCK_TOPIC_ID
     mock_transaction_response.status = ResponseCode.SUCCESS
 
     mock_topic_create_transaction = MockTopicCreateTransaction.return_value
@@ -33,7 +33,7 @@ def mock_topic_update_transaction(mocker: MockerFixture):
     MockTopicUpdateTransaction = mocker.patch("hiero_did_sdk_python.hcs.hcs_topic_service.TopicUpdateTransaction")
 
     mock_transaction_response = mocker.MagicMock()
-    mock_transaction_response.topicId.__str__.return_value = MOCK_TOPIC_ID
+    mock_transaction_response.topic_id.__str__.return_value = MOCK_TOPIC_ID
     mock_transaction_response.status = ResponseCode.SUCCESS
 
     mock_topic_update_transaction = MockTopicUpdateTransaction.return_value

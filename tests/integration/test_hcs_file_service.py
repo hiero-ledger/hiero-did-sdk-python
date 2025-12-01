@@ -33,7 +33,7 @@ class TestHcsFileService:
         topic_id = await service.submit_file(file_payload, OPERATOR_KEY_DER)
 
         # Wait until changes are propagated to Hedera Mirror node
-        await asyncio.sleep(10)
+        await asyncio.sleep(5)
 
         topic_info = await execute_hcs_query_async(TopicInfoQuery(topic_id=TopicId.from_string(topic_id)), client)
         topic_messages = await HcsMessageResolver(topic_id, HcsFileChunkMessage).execute(client)

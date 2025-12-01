@@ -60,7 +60,7 @@ class TestHederaDidResolver:
         assert did.identifier
 
         # Wait until changes are propagated to Hedera Mirror node
-        await asyncio.sleep(10)
+        await asyncio.sleep(5)
 
         result = await HederaDidResolver(client).resolve(did.identifier)
 
@@ -106,7 +106,7 @@ class TestHederaDidResolver:
         assert did.identifier
 
         # Wait until changes are propagated to Hedera Mirror node
-        await asyncio.sleep(10)
+        await asyncio.sleep(5)
 
         result = await HederaDidResolver(client).resolve(did.identifier)
 

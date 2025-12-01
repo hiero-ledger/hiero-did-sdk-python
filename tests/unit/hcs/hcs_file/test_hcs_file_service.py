@@ -135,7 +135,7 @@ class TestHcsFileService:
         service = HcsFileService(mock_client)
         with pytest.raises(
             Exception,
-            match="Invalid TopicId format. Expected 'shard.realm.num'",
+            match="Invalid topic ID string 'invalid_topic_id'. Expected format 'shard.realm.num'.",
         ):
             await service.resolve_file("invalid_topic_id")
 

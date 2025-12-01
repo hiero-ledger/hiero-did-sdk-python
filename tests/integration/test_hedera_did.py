@@ -159,7 +159,7 @@ class TestHederaDid:
             assert did.topic_id
 
             # Wait until changes are propagated to Hedera Mirror node
-            await asyncio.sleep(10)
+            await asyncio.sleep(5)
 
             did_document = await did.resolve()
 
@@ -574,7 +574,7 @@ class TestHederaDid:
             )
 
             # Wait until changes are propagated to Hedera Mirror node
-            await asyncio.sleep(10)
+            await asyncio.sleep(5)
 
             did_document = await did.resolve()
 
