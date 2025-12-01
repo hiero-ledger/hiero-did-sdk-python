@@ -72,7 +72,7 @@ class TestDemo:
         )
 
         # Add DID Document service
-        await issuer_did.add_service(
+        await issuer_did.add_or_update_service(
             id_=f"{issuer_did.identifier}#service-1",
             service_type="LinkedDomains",
             service_endpoint="https://example.com/vcs",
@@ -81,7 +81,7 @@ class TestDemo:
         verification_key = PrivateKey.generate_ed25519()
 
         # Add DID Document Verification Method
-        await issuer_did.add_verification_method(
+        await issuer_did.add_or_update_verification_method(
             id_=f"{issuer_did.identifier}#key-1",
             controller=issuer_did.identifier,
             public_key_der=verification_key.public_key().to_string(),

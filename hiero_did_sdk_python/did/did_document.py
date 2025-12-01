@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from typing import cast
 
 from hiero_sdk_python import PublicKey
@@ -29,7 +30,6 @@ class DidDocument(Serializable):
     Attributes:
         created: Creation timestamp
         updated: Last update timestamp
-        version_id: DID document version ID (equals to last update timestamp)
         deactivated: DID document deactivation status
         controller: Dictionary representing DID document controller info
         services: DID document services dictionary
@@ -42,9 +42,8 @@ class DidDocument(Serializable):
         self.id_ = id_
         self.context = DID_DOCUMENT_CONTEXT
 
-        self.created: float | None = None
-        self.updated: float | None = None
-        self.version_id: str | None = None
+        self.created: datetime | None = None
+        self.updated: datetime | None = None
         self.deactivated: bool = False
 
         self.controller: dict | None = None
@@ -60,6 +59,10 @@ class DidDocument(Serializable):
         }
 
         self._public_key: PublicKey | None = None
+
+    @property
+    def version_timestamp(self) -> datetime | None:
+        return self.updated or self.created
 
     async def process_messages(self, envelopes: list[HcsDidMessageEnvelope]):
         """
@@ -151,7 +154,7 @@ class DidDocument(Serializable):
 
         return root_object
 
-    async def _process_create_message(self, message: HcsDidMessage):  # noqa: C901
+    async def _process_create_message(self, message: HcsDidMessage):
         event = message.event
 
         match event.event_target:
@@ -202,53 +205,9 @@ class DidDocument(Serializable):
 
                 did_owner_event = cast(HcsDidUpdateDidOwnerEvent, event)
 
-                self.controller = did_owner_event.get_owner_def()
+                self.controller = did_owner_event.get_controller_verification_method()
                 self._public_key = did_owner_event.public_key
                 self._on_activated(message.timestamp)
-            case HcsDidEventTarget.SERVICE:
-                update_service_event = cast(HcsDidUpdateServiceEvent, event)
-                event_id = update_service_event.id_
-
-                if event_id in self.services:
-                    LOGGER.warning(f"Duplicate create Service event ID: {event_id}, skipping event...")
-                    return
-
-                self.services[event_id] = update_service_event.get_service_def()
-                self._on_updated(message.timestamp)
-            case HcsDidEventTarget.VERIFICATION_METHOD:
-                update_verification_method_event = cast(HcsDidUpdateVerificationMethodEvent, event)
-                event_id = update_verification_method_event.id_
-
-                if event_id in self.verification_methods:
-                    LOGGER.warning(f"Duplicate create Verification Method event ID: {event_id}, skipping event...")
-                    return
-
-                self.verification_methods[event_id] = update_verification_method_event.get_verification_method_def()
-                self._on_updated(message.timestamp)
-            case HcsDidEventTarget.VERIFICATION_RELATIONSHIP:
-                update_verification_relationship_event = cast(HcsDidUpdateVerificationRelationshipEvent, event)
-                relationship_type = update_verification_relationship_event.relationship_type
-                event_id = update_verification_relationship_event.id_
-
-                if relationship_type not in self.verification_relationships:
-                    LOGGER.warning(
-                        f"Create verification Relationship event with type {relationship_type} is not supported, skipping event..."
-                    )
-                    return
-
-                if event_id in self.verification_relationships[relationship_type]:
-                    LOGGER.warning(
-                        f"Duplicate create Verification Relationship event ID: {event_id}, skipping event..."
-                    )
-                    return
-
-                self.verification_relationships[relationship_type].append(event_id)
-
-                if event_id not in self.verification_methods:
-                    self.verification_methods[event_id] = (
-                        update_verification_relationship_event.get_verification_method_def()
-                    )
-                self._on_updated(message.timestamp)
             case _:
                 LOGGER.warning(f"Create {event.event_target} operation is not supported, skipping event...")
 
@@ -259,28 +218,18 @@ class DidDocument(Serializable):
             case HcsDidEventTarget.DID_OWNER:
                 did_owner_event = cast(HcsDidUpdateDidOwnerEvent, event)
 
-                self.controller = did_owner_event.get_owner_def()
+                self.controller = did_owner_event.get_controller_verification_method()
                 self._public_key = did_owner_event.public_key
                 self._on_updated(message.timestamp)
             case HcsDidEventTarget.SERVICE:
                 update_service_event = cast(HcsDidUpdateServiceEvent, event)
                 event_id = update_service_event.id_
 
-                if event_id not in self.services:
-                    LOGGER.warning(f"Service with ID: {event_id} is not found on the document, skipping event...")
-                    return
-
                 self.services[event_id] = update_service_event.get_service_def()
                 self._on_updated(message.timestamp)
             case HcsDidEventTarget.VERIFICATION_METHOD:
                 update_verification_method_event = cast(HcsDidUpdateVerificationMethodEvent, event)
                 event_id = update_verification_method_event.id_
-
-                if event_id not in self.verification_methods:
-                    LOGGER.warning(
-                        f"Verification Method with ID: {event_id} is not found on the document, skipping event..."
-                    )
-                    return
 
                 self.verification_methods[event_id] = update_verification_method_event.get_verification_method_def()
                 self._on_updated(message.timestamp)
@@ -291,15 +240,12 @@ class DidDocument(Serializable):
 
                 if relationship_type not in self.verification_relationships:
                     LOGGER.warning(
-                        f"Update verification Relationship event with type {relationship_type} is not supported, skipping event..."
+                        f"Update Verification Relationship event with type {relationship_type} is not supported, skipping event..."
                     )
                     return
 
                 if event_id not in self.verification_relationships[relationship_type]:
-                    LOGGER.warning(
-                        f"Verification Relationship with ID: {event_id} is not found on the document, skipping event..."
-                    )
-                    return
+                    self.verification_relationships[relationship_type].append(event_id)
 
                 self.verification_methods[event_id] = (
                     update_verification_relationship_event.get_verification_method_def()
@@ -412,18 +358,15 @@ class DidDocument(Serializable):
 
         return True
 
-    def _on_activated(self, timestamp: float):
+    def _on_activated(self, timestamp: datetime):
         self.created = timestamp
         self.updated = timestamp
         self.deactivated = False
-        self.version_id = str(timestamp)
 
-    def _on_updated(self, timestamp: float):
+    def _on_updated(self, timestamp: datetime):
         self.updated = timestamp
-        self.version_id = str(timestamp)
 
     def _on_deactivated(self):
         self.created = None
         self.updated = None
         self.deactivated = True
-        self.version_id = None

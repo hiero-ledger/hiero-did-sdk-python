@@ -49,7 +49,6 @@ class TestDidDocument:
         assert doc.created is None
         assert doc.updated is None
         assert not doc.deactivated
-        assert doc.version_id is None
 
     @pytest.mark.asyncio
     async def test_ignores_till_create(self, test_key):
@@ -58,19 +57,17 @@ class TestDidDocument:
 
         messages = [
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateServiceEvent(f"{IDENTIFIER_2}#service-1", "LinkedDomains", "https://test.identity.com"),
             ),
             HcsDidMessage(
                 DidDocumentOperation.CREATE,
                 IDENTIFIER_2,
-                HcsDidUpdateDidOwnerEvent(
-                    f"{IDENTIFIER_2}#did-root-key", IDENTIFIER_2, test_key.public_key, test_key.key_type
-                ),
+                HcsDidUpdateDidOwnerEvent(IDENTIFIER_2, IDENTIFIER_2, test_key.public_key, test_key.key_type),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateServiceEvent(f"{IDENTIFIER_2}#service-2", "LinkedDomains", "https://test2.identity.com"),
             ),
@@ -102,7 +99,6 @@ class TestDidDocument:
         assert doc.created
         assert doc.updated
         assert not doc.deactivated
-        assert doc.version_id
 
     @patch("hiero_did_sdk_python.did.did_document.download_ipfs_document_by_cid")
     @pytest.mark.asyncio
@@ -150,16 +146,14 @@ class TestDidDocument:
         assert doc.get_json_payload() == test_doc
 
     @pytest.mark.asyncio
-    async def test_handles_ceate_didowner_event(self, test_key):
+    async def test_handles_create_didowner_event(self, test_key):
         """handles create DIDOwner event"""
 
         messages = [
             HcsDidMessage(
                 DidDocumentOperation.CREATE,
                 IDENTIFIER_2,
-                HcsDidUpdateDidOwnerEvent(
-                    f"{IDENTIFIER_2}#did-root-key", IDENTIFIER_2, test_key.public_key, test_key.key_type
-                ),
+                HcsDidUpdateDidOwnerEvent(IDENTIFIER_2, IDENTIFIER_2, test_key.public_key, test_key.key_type),
             )
         ]
 
@@ -184,7 +178,6 @@ class TestDidDocument:
         assert doc.created
         assert doc.updated
         assert not doc.deactivated
-        assert doc.version_id
 
     @pytest.mark.asyncio
     async def test_handle_did_delete_event(self, test_key):
@@ -194,9 +187,7 @@ class TestDidDocument:
             HcsDidMessage(
                 DidDocumentOperation.CREATE,
                 IDENTIFIER_2,
-                HcsDidUpdateDidOwnerEvent(
-                    f"{IDENTIFIER_2}#did-root-key", IDENTIFIER_2, test_key.public_key, test_key.key_type
-                ),
+                HcsDidUpdateDidOwnerEvent(IDENTIFIER_2, IDENTIFIER_2, test_key.public_key, test_key.key_type),
             ),
             HcsDidMessage(DidDocumentOperation.DELETE, IDENTIFIER_2, HcsDidDeleteEvent()),
         ]
@@ -215,7 +206,6 @@ class TestDidDocument:
         assert doc.created is None
         assert doc.updated is None
         assert doc.deactivated
-        assert doc.version_id is None
 
     @pytest.mark.asyncio
     async def test_handle_change_did_owner_event(self, test_key):
@@ -230,12 +220,10 @@ class TestDidDocument:
             HcsDidMessage(
                 DidDocumentOperation.CREATE,
                 IDENTIFIER_2,
-                HcsDidUpdateDidOwnerEvent(
-                    f"{IDENTIFIER_2}#did-root-key", IDENTIFIER_2, test_key.public_key, test_key.key_type
-                ),
+                HcsDidUpdateDidOwnerEvent(IDENTIFIER_2, IDENTIFIER_2, test_key.public_key, test_key.key_type),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateVerificationRelationshipEvent(
                     f"{IDENTIFIER_2}#key-2",
@@ -249,7 +237,7 @@ class TestDidDocument:
                 DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateDidOwnerEvent(
-                    f"{other_owner_identifier}#did-root-key",
+                    other_owner_identifier,
                     other_owner_identifier,
                     test_key.public_key,
                     test_key.key_type,
@@ -286,7 +274,6 @@ class TestDidDocument:
         assert doc.created
         assert doc.updated
         assert not doc.deactivated
-        assert doc.version_id
 
     @pytest.mark.asyncio
     async def test_handle_add_ver_rel_events(self, test_key):
@@ -301,24 +288,22 @@ class TestDidDocument:
             HcsDidMessage(
                 DidDocumentOperation.CREATE,
                 IDENTIFIER_2,
-                HcsDidUpdateDidOwnerEvent(
-                    f"{IDENTIFIER_2}#did-root-key", IDENTIFIER_2, test_key.public_key, test_key.key_type
-                ),
+                HcsDidUpdateDidOwnerEvent(IDENTIFIER_2, IDENTIFIER_2, test_key.public_key, test_key.key_type),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateServiceEvent(f"{IDENTIFIER_2}#service-1", "LinkedDomains", "https://test.identity.com"),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateVerificationMethodEvent(
                     f"{IDENTIFIER_2}#key-1", IDENTIFIER_2, key1.public_key(), key1_type
                 ),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateVerificationRelationshipEvent(
                     f"{IDENTIFIER_2}#key-2", key2.public_key(), IDENTIFIER_2, "capabilityDelegation", key2_type
@@ -367,7 +352,6 @@ class TestDidDocument:
         assert doc.created
         assert doc.updated
         assert not doc.deactivated
-        assert doc.version_id
 
     @pytest.mark.asyncio
     async def test_handle_update_ver_rel(self, test_key):
@@ -391,36 +375,34 @@ class TestDidDocument:
             HcsDidMessage(
                 DidDocumentOperation.CREATE,
                 IDENTIFIER_2,
-                HcsDidUpdateDidOwnerEvent(
-                    f"{IDENTIFIER_2}#did-root-key", IDENTIFIER_2, test_key.public_key, test_key.key_type
-                ),
+                HcsDidUpdateDidOwnerEvent(IDENTIFIER_2, IDENTIFIER_2, test_key.public_key, test_key.key_type),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateServiceEvent(f"{IDENTIFIER_2}#service-1", "LinkedDomains", "https://test.identity.com"),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateServiceEvent(f"{IDENTIFIER_2}#service-2", "LinkedDomains", "https://test2.identity.com"),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateVerificationMethodEvent(
                     f"{IDENTIFIER_2}#key-1", IDENTIFIER_2, key1.public_key(), key1_type
                 ),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateVerificationRelationshipEvent(
                     f"{IDENTIFIER_2}#key-2", key2.public_key(), IDENTIFIER_2, "capabilityDelegation", key2_type
                 ),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateVerificationRelationshipEvent(
                     f"{IDENTIFIER_2}#key-3", key3.public_key(), IDENTIFIER_2, "authentication", key3_type
@@ -499,7 +481,6 @@ class TestDidDocument:
         assert doc.created
         assert doc.updated
         assert not doc.deactivated
-        assert doc.version_id
 
     @pytest.mark.asyncio
     async def test_handle_revoke_ver_rel(self, test_key):
@@ -517,36 +498,34 @@ class TestDidDocument:
             HcsDidMessage(
                 DidDocumentOperation.CREATE,
                 IDENTIFIER_2,
-                HcsDidUpdateDidOwnerEvent(
-                    f"{IDENTIFIER_2}#did-root-key", IDENTIFIER_2, test_key.public_key, test_key.key_type
-                ),
+                HcsDidUpdateDidOwnerEvent(IDENTIFIER_2, IDENTIFIER_2, test_key.public_key, test_key.key_type),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateServiceEvent(f"{IDENTIFIER_2}#service-1", "LinkedDomains", "https://test.identity.com"),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateServiceEvent(f"{IDENTIFIER_2}#service-2", "LinkedDomains", "https://test2.identity.com"),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateVerificationMethodEvent(
                     f"{IDENTIFIER_2}#key-1", IDENTIFIER_2, key1.public_key(), key1_type
                 ),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateVerificationRelationshipEvent(
                     f"{IDENTIFIER_2}#key-2", key2.public_key(), IDENTIFIER_2, "capabilityDelegation", key2_type
                 ),
             ),
             HcsDidMessage(
-                DidDocumentOperation.CREATE,
+                DidDocumentOperation.UPDATE,
                 IDENTIFIER_2,
                 HcsDidUpdateVerificationRelationshipEvent(
                     f"{IDENTIFIER_2}#key-3", key3.public_key(), IDENTIFIER_2, "authentication", key3_type
@@ -607,4 +586,3 @@ class TestDidDocument:
         assert doc.created
         assert doc.updated
         assert not doc.deactivated
-        assert doc.version_id

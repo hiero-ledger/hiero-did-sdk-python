@@ -53,7 +53,7 @@ class TestHederaDidResolver:
         did = HederaDid(client=client, private_key_der=OPERATOR_KEY_DER)
 
         await did.register()
-        await did.add_service(
+        await did.add_or_update_service(
             id_=f"{did.identifier}#service-1", service_type="LinkedDomains", service_endpoint="https://example.com/vcs"
         )
 
@@ -89,7 +89,7 @@ class TestHederaDidResolver:
             "didDocumentMetadata": {
                 "created": Something,
                 "updated": Something,
-                "versionId": Something,
+                "deactivated": False,
             },
             "didResolutionMetadata": {
                 "contentType": "application/did+ld+json",
@@ -119,7 +119,6 @@ class TestHederaDidResolver:
                 "verificationMethod": [],
             },
             "didDocumentMetadata": {
-                "versionId": None,
                 "deactivated": True,
             },
             "didResolutionMetadata": {
