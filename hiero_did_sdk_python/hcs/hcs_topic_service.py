@@ -53,7 +53,7 @@ class HcsTopicService:
         signed_transaction = await sign_hcs_transaction_async(transaction, signing_keys)
         transaction_receipt = await execute_hcs_transaction_async(signed_transaction, self._client)
 
-        return str(transaction_receipt.topicId)
+        return str(transaction_receipt.topic_id)
 
     async def update_topic(self, topic_id: str, topic_options: HcsTopicOptions, signing_keys: list[PrivateKey]):
         transaction = _set_topic_transaction_options(
