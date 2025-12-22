@@ -1219,14 +1219,14 @@ setuptools = "*"
 
 [[package]]
 name = "hiero-sdk-python"
-version = "0.1.9"
+version = "0.1.10"
 description = "A Hiero SDK in pure Python"
 optional = false
 python-versions = "<3.14,>=3.10"
 groups = ["main"]
 files = [
-    {file = "hiero_sdk_python-0.1.9-py3-none-any.whl", hash = "sha256:e0edb419c782f4099ad7c775b619e60d8b80621f1dfde87193bb3c23270e9290"},
-    {file = "hiero_sdk_python-0.1.9.tar.gz", hash = "sha256:631c9189a1405b02dfc4bdfac336986e1e3b449ede7e632f92981d720c54fa36"},
+    {file = "hiero_sdk_python-0.1.10-py3-none-any.whl", hash = "sha256:eb6f019c5432fdef934773a9a739ca4326ad617a1c258a13eee2e108180f305a"},
+    {file = "hiero_sdk_python-0.1.10.tar.gz", hash = "sha256:30083cd8c493b3a9683cf92fd6abd9af7e3f56c7e85a733f1ebc5e8e61ca6146"},
 ]
 
 [package.dependencies]
@@ -2994,4 +2994,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.14"
-content-hash = "2152cd9582c9cd804e641a0318bf4002a92811c683c8e7dc55a34052a7e38c43"
+content-hash = "28f2e110b5ca2f1eba962a0b43e7bc9dad751d26d8048c36ebe3c7fe652b0623"
