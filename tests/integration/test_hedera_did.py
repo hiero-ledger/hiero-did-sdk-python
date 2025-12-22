@@ -35,7 +35,7 @@ async def resolve_did_topic_messages(topic_id: str, client: Client):
     return await HcsMessageResolver(topic_id, HcsDidMessageEnvelope).execute(client)
 
 
-# @pytest.mark.flaky(retries=3, delay=1)
+@pytest.mark.flaky(retries=3, delay=1)
 @pytest.mark.asyncio(loop_scope="session")
 class TestHederaDid:
     class TestRegister:
