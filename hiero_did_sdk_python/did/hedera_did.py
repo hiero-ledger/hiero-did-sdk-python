@@ -265,7 +265,7 @@ class HederaDid:
 
         def build_did_transaction(message_submit_transaction: TopicMessageSubmitTransaction) -> Transaction:
             message_submit_transaction.transaction_fee = MAX_TRANSACTION_FEE.to_tinybars()  # pyright: ignore [reportAttributeAccessIssue]
-            return message_submit_transaction.freeze_with(self._client).sign(self._private_key)
+            return message_submit_transaction.freeze_with(self._client).sign(cast(PrivateKey, self._private_key))
 
         await HcsMessageTransaction(self.topic_id, envelope, build_did_transaction).execute(self._client)
 
