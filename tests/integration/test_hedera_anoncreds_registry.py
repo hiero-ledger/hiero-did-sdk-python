@@ -32,9 +32,9 @@ from hiero_did_sdk_python.anoncreds.types import (
 from hiero_did_sdk_python.anoncreds.utils import AnonCredsObjectType, parse_anoncreds_identifier
 from hiero_did_sdk_python.hcs import HcsMessageResolver
 
-from .conftest import OPERATOR_KEY_DER
+from .conftest import NETWORK, OPERATOR_KEY_DER
 
-ISSUER_ID = "did:hedera:testnet:zvAQyPeUecGck2EsxcsihxhAB6jZurFrBbj2gC7CNkS5o_0.0.5063027"
+ISSUER_ID = f"did:hedera:{NETWORK}:zvAQyPeUecGck2EsxcsihxhAB6jZurFrBbj2gC7CNkS5o_0.0.5063027"
 
 MOCK_SCHEMA_PARAMS = {
     "name": "mock-schema",

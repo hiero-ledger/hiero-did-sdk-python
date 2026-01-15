@@ -61,13 +61,16 @@ class HcsMessageResolver:
         if self._timestamp_from:
             self._topic_listener.set_start_time(self._timestamp_from)
 
+        if self._timestamp_to:
+            self._topic_listener.set_end_time(self._timestamp_to)
+
         if self._limit:
             self._topic_listener.set_limit(self._limit)
 
         (
-            self._topic_listener.set_end_time(self._timestamp_to or Timestamp(seconds=int(time.time()), nanos=0))
-            .set_completion_handler(handle_completion)
-            .subscribe(client, self._handle_message, handle_error)
+            self._topic_listener.set_completion_handler(handle_completion).subscribe(
+                client, self._handle_message, handle_error
+            )
         )
 
         self._last_message_arrival_time = time.time()
