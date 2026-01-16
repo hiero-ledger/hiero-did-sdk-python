@@ -7,6 +7,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
 
+permissions:
+  checks: write
+  pull-requests: write
+
 jobs:
   quality:
     runs-on: ubuntu-latest

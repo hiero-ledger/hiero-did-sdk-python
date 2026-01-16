@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import get_args
+from typing import cast, get_args
 
 from .anoncreds import (
     AnonCredsCredDef,
@@ -23,7 +23,7 @@ LOG_FORMAT = os.environ.get("HEDERA_DID_SDK_LOG_FORMAT", None)
 if LOG_LEVEL not in [*get_args(LogLevel), None]:
     raise Exception("Invalid log level")
 
-configure_logger(logging.getLogger(), LOG_LEVEL, LOG_FORMAT)
+configure_logger(logging.getLogger(), cast(LogLevel, LOG_LEVEL), LOG_FORMAT)
 
 __all__ = [
     "HederaDidResolver",
