@@ -89,7 +89,7 @@ make build
 ### Prerequisites
 
 - Python 3.12+
-- [Poetry](https://python-poetry.org/) (at least 1.8.4)
+- [Poetry](https://python-poetry.org/) (at least 2.0.0)
 - NodeJS and npm (used by pre-commit hooks)
 - Tools for Makefile support (Windows only)
   - Can be installed with [chocolatey](https://chocolatey.org/): `choco install make`
