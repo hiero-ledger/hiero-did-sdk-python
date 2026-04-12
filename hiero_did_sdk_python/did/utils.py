@@ -67,6 +67,7 @@ class ParsedIdentifier:
     network: str
     topic_id: str
     public_key_base58: str
+    method: str = HEDERA_DID_METHOD
 
 
 def parse_identifier(identifier: str) -> ParsedIdentifier:
@@ -83,10 +84,6 @@ def parse_identifier(identifier: str) -> ParsedIdentifier:
         raise DidException("DID string is invalid: invalid prefix.", DidErrorCode.INVALID_DID_STRING)
 
     method_name = did_parts.pop(0)
-    if method_name != HEDERA_DID_METHOD:
-        raise DidException(
-            "DID string is invalid: invalid method name: " + method_name, DidErrorCode.INVALID_DID_STRING
-        )
 
     try:
         network_name = did_parts.pop(0)
@@ -107,7 +104,7 @@ def parse_identifier(identifier: str) -> ParsedIdentifier:
         if topic_id and not TOPIC_ID_REGEX.match(topic_id):
             raise DidException("DID string is invalid. Topic ID doesn't match pattern", DidErrorCode.INVALID_DID_STRING)
 
-        return ParsedIdentifier(network_name, topic_id, public_key_base58)
+        return ParsedIdentifier(network_name, topic_id, public_key_base58, method_name)
     except Exception as error:
         if isinstance(error, DidException):
             raise error
@@ -115,8 +112,8 @@ def parse_identifier(identifier: str) -> ParsedIdentifier:
         raise DidException("DID string is invalid. " + str(error), DidErrorCode.INVALID_DID_STRING) from error
 
 
-def build_identifier(network: str, public_key: str, topic_id: str):
-    network_segment = f"{HEDERA_DID_METHOD}{DID_METHOD_SEPARATOR}{network}"
+def build_identifier(network: str, public_key: str, topic_id: str, method: str = HEDERA_DID_METHOD):
+    network_segment = f"{method}{DID_METHOD_SEPARATOR}{network}"
 
     return (
         DID_PREFIX

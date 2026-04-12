@@ -15,11 +15,6 @@ class TestUtils:
             ("invalidDid1", DidException, "DID string is invalid: topic ID is missing"),
             ("did:invalid", DidException, "DID string is invalid: topic ID is missing"),
             (
-                "did:invalidMethod:8LjUL78kFVnWV9rFnNCTE5bZdRmjm2obqJwS892jVLak_0.0.24352",
-                DidException,
-                "DID string is invalid: invalid method name: invalidMethod",
-            ),
-            (
                 "did:hedera:invalidNetwork:8LjUL78kFVnWV9rFnNCTE5bZdRmjm2obqJwS892jVLak_0.0.24352",
                 DidException,
                 "DID string is invalid. Invalid Hedera network.",
@@ -55,11 +50,6 @@ class TestUtils:
                 DidException,
                 "DID string is invalid. ID holds incorrect format.",
             ),
-            (
-                "did:notHedera:testnet:z6Mk8LjUL78kFVnWV9rFnNCTE5bZdRmjm2obqJwS892jVLak_0.0.1",
-                DidException,
-                "DID string is invalid. invalid method name: notHedera",
-            ),
         ),
     )
     def test_parse_invalid_identifier_throws_error(self, identifier, expected_exception, expected_message):
@@ -77,6 +67,12 @@ class TestUtils:
                 "2JjAddF8hvcU9gFQJrx7uZFAcSzXbu4YvadiFoJk6aKw3LPwDnE9UsoQjS8sEJgi5xyzNHk5PF2Gh",
                 "0.0.5047476",
             ),
+            (
+                "hiero",
+                "testnet",
+                "2JjAddF8hvcU9gFQJrx7uZFAcSzXbu4YvadiFoJk6aKw3LPwDnE9UsoQjS8sEJgi5xyzNHk5PF2Gh",
+                "0.0.5047476",
+            ),
         ),
     )
     def test_parse_valid_identifier(self, network, subnetwork, encoded_string, topic_id):
@@ -86,6 +82,7 @@ class TestUtils:
         parsed_identifier = parse_identifier(identifier)
 
         assert isinstance(parsed_identifier, ParsedIdentifier)
+        assert parsed_identifier.method == network
         assert parsed_identifier.network == subnetwork
         assert parsed_identifier.topic_id == topic_id
         assert parsed_identifier.public_key_base58 == encoded_string
@@ -100,14 +97,18 @@ class TestUtils:
         assert isinstance(parse_identifier(identifier), ParsedIdentifier)
 
     @pytest.mark.parametrize(
-        ("subnetwork", "public_key", "topic_id"),
+        ("subnetwork", "public_key", "topic_id", "method"),
         (
-            ("testnet", "z6Mk8LjUL78kFVnWV9rFnNCTE5bZdRmjm2obqJwS892jVLak", "0.0.1"),
-            ("mainnet", "7Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgUm", "0.0.12345"),
+            ("testnet", "z6Mk8LjUL78kFVnWV9rFnNCTE5bZdRmjm2obqJwS892jVLak", "0.0.1", "hedera"),
+            ("mainnet", "7Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgUm", "0.0.12345", "hedera"),
+            ("testnet", "z6Mk8LjUL78kFVnWV9rFnNCTE5bZdRmjm2obqJwS892jVLak", "0.0.1", "hiero"),
         ),
     )
-    def test_build_identifier(self, subnetwork, public_key, topic_id):
-        identifier = build_identifier(subnetwork, public_key, topic_id)
+    def test_build_identifier(self, subnetwork, public_key, topic_id, method):
+        if method == "hedera":
+            identifier = build_identifier(subnetwork, public_key, topic_id)
+        else:
+            identifier = build_identifier(subnetwork, public_key, topic_id, method)
 
         assert isinstance(identifier, str)
-        assert identifier == f"did:hedera:{subnetwork}:{public_key}_{topic_id}"
+        assert identifier == f"did:{method}:{subnetwork}:{public_key}_{topic_id}"
