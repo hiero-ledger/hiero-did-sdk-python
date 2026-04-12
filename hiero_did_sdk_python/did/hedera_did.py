@@ -11,6 +11,7 @@ from ..utils.keys import get_key_type
 from .did_document import DidDocument
 from .did_document_operation import DidDocumentOperation
 from .did_error import DidException
+from .did_syntax import HEDERA_DID_METHOD
 from .hcs import HcsDidMessageEnvelope
 from .hcs.events import HcsDidEvent
 from .hcs.events.document import HcsDidDeleteEvent
@@ -40,12 +41,20 @@ class HederaDid:
         client: Hedera Client
         identifier: DID identifier (for existing DIDs)
         private_key_der: DID Owner (controller) private key encoded in DER format. Can be empty for read-only access
+        did_method: The DID method to use. Defaults to HEDERA_DID_METHOD
     """
 
-    def __init__(self, client: Client, identifier: str | None = None, private_key_der: str | None = None):
+    def __init__(
+        self,
+        client: Client,
+        identifier: str | None = None,
+        private_key_der: str | None = None,
+        did_method: str = HEDERA_DID_METHOD,
+    ):
         if not identifier and not private_key_der:
             raise DidException("'identifier' and 'private_key_der' cannot both be empty")
 
+        self.did_method = did_method
         self._client = client
         self._hcs_topic_service = HcsTopicService(client)
 
@@ -59,6 +68,7 @@ class HederaDid:
             parsed_identifier = parse_identifier(self.identifier)
             self.network = parsed_identifier.network
             self.topic_id = parsed_identifier.topic_id
+            self.did_method = parsed_identifier.method
         else:
             self.topic_id = None
 
@@ -85,6 +95,7 @@ class HederaDid:
                 self.network,
                 multibase_encode(bytes(self._private_key.public_key().to_bytes_raw()), "base58btc"),
                 self.topic_id,
+                self.did_method,
             )
 
         hcs_event = HcsDidUpdateDidOwnerEvent(
