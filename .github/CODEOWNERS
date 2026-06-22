@@ -9,5 +9,5 @@
 
 # Protection Rules for Github Configuration Files and Actions Workflows
 /.github/                                           @hiero-ledger/github-maintainers
-/.github/workflows/                                 @hiero-ledger/github-maintainers @hiero-ledger/hiero-did-sdk-python-maintainers
-/.github/actions/                                   @hiero-ledger/github-maintainers @hiero-ledger/hiero-did-sdk-python-maintainers
+/.github/workflows/                                 @hiero-ledger/github-maintainers @hiero-ledger/hiero-did-sdk-maintainers
+/.github/actions/                                   @hiero-ledger/github-maintainers @hiero-ledger/hiero-did-sdk-maintainers
