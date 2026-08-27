@@ -8,8 +8,7 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
 
 permissions:
-  checks: write
-  pull-requests: write
+  contents: read
 
 jobs:
   quality:
@@ -36,6 +35,10 @@ jobs:
 
   tests-and-type-check:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: write
     strategy:
       matrix:
         python-version: ["3.12", "3.13"]
